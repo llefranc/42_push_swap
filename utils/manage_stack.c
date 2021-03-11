@@ -6,11 +6,11 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:06:35 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/09 15:52:52 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/11 12:49:49 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/push_swap.h"
+#include "../includes/headers.h"
 
 t_node* newEndNode()
 {
@@ -64,42 +64,64 @@ void push_back(t_node* endList, const int val)
 
 void printOpName(int opNumber)
 {
-	opNumber == SA ? ft_putstr_fd("Exec sa:\n\n", 1) : 0;
-	opNumber == SB ? ft_putstr_fd("Exec sb:\n\n", 1) : 0;
-	opNumber == SS ? ft_putstr_fd("Exec ss:\n\n", 1) : 0;
-	opNumber == PA ? ft_putstr_fd("Exec pa:\n\n", 1) : 0;
-	opNumber == PB ? ft_putstr_fd("Exec pb:\n\n", 1) : 0;
-	opNumber == RA ? ft_putstr_fd("Exec ra:\n\n", 1) : 0;
-	opNumber == RB ? ft_putstr_fd("Exec rb:\n\n", 1) : 0;
-	opNumber == RR ? ft_putstr_fd("Exec rr:\n\n", 1) : 0;
-	opNumber == RRA ? ft_putstr_fd("Exec rra:\n\n", 1) : 0;
-	opNumber == RRB ? ft_putstr_fd("Exec rrb:\n\n", 1) : 0;
-	opNumber == RRR ? ft_putstr_fd("Exec rrr:\n\n", 1) : 0;
+	if (opNumber == INIT)
+		ft_putstr_fd("Init stacks:\n\n", 1);
+	else if (opNumber == SA)
+		ft_putstr_fd("Exec sa:\n\n", 1);
+	else if (opNumber == SB)
+		ft_putstr_fd("Exec sb:\n\n", 1);
+	else if (opNumber == SS)
+		ft_putstr_fd("Exec ss:\n\n", 1);
+	else if (opNumber == PA)
+		ft_putstr_fd("Exec pa:\n\n", 1);
+	else if (opNumber == PB)
+		ft_putstr_fd("Exec pb:\n\n", 1);
+	else if (opNumber == RA)
+		ft_putstr_fd("Exec ra:\n\n", 1);
+	else if (opNumber == RB)
+		ft_putstr_fd("Exec rb:\n\n", 1);
+	else if (opNumber == RR)
+		ft_putstr_fd("Exec rr:\n\n", 1);
+	else if (opNumber == RR)
+		 ft_putstr_fd("Exec rra:\n\n", 1);
+	else if (opNumber == RR)
+		 ft_putstr_fd("Exec rrb:\n\n", 1);
+	else if (opNumber == RR)
+		 ft_putstr_fd("Exec rrr:\n\n", 1);
 }
 
-void printStacks(t_node* endA, t_node* endB, int debug, int opNumber)
+void printStacks(int opNumber, t_node* endA, t_node* endB, int debug)
 {
 	if (!debug)
 		return ;
 	
+	int i = 0;
 	t_node* tmpA = endA->next;
 	t_node* tmpB = endB->next;
 
 	printOpName(opNumber);
 	while (tmpA != endA || tmpB != endB)
-	{
-		if (tmpA != endA)
+	{		
+		if (tmpA != endA && (endA->data >= endB->data
+				|| (endB->data - i == endA->data)))
+				// || (endA->data < endB->data && endA->data + i == endB->data)))
 		{
 			ft_printf("%d", tmpA->data);
 			tmpA = tmpA->next;
 		}
 		ft_printf("\t");
-		if (tmpB != endB)
+
+		if (tmpB != endB && (endB->data >= endA->data
+				|| (endA->data - i == endB->data)))
+				// || (endB->data < endA->data && endB->data + i == endA->data)))
 		{
 			ft_printf("%d", tmpB->data);
 			tmpB = tmpB->next;
 		}
 		ft_putchar_fd('\n', 1);
+
+		if (endA->data +i != endB->data && endA->data != endB->data + i)
+			++i;
 	}
 	ft_printf("\n-\t-\nA\tB\n----------------------------------------\n\n");
 }

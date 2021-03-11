@@ -1,22 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/09 15:54:30 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/11 12:30:00 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 #define PUSH_SWAP_H
-
-#include <stdlib.h>
-#include <fcntl.h>
-
-#include "libftprintf.h"
 
 
 /* ------------------------------------------------------------- */
@@ -25,17 +20,18 @@
 #define FALSE 0
 #define TRUE 1
 
-#define SA 0
-#define SB 1
-#define SS 2
-#define PA 3
-#define PB 4
-#define RA 5
-#define RB 6
-#define RR 7
-#define RRA 8
-#define RRB 9
-#define RRR 10
+#define INIT 0
+#define SA 1
+#define SB 2
+#define SS 3
+#define PA 4
+#define PB 5
+#define RA 6
+#define RB 7
+#define RR 8
+#define RRA 9
+#define RRB 10
+#define RRR 11
 
 
 /* ------------------------------------------------------------- */
@@ -104,13 +100,13 @@ void printOpName(int opNumber);
 /**
 *   Prints the operation's name and the two stacks on STDOUT if debug option is activated.
 *
+*   @param opNumber	The operation number used to determinate which operation's name needs 
+*					to be printed.
 *	@param endA		The first stack to print.
 *	@param endB		The second stack to print.
 *	@param debug	If TRUE, the function will print the stacks. Does nothing otherwise.
-*   @param opNumber	The operation number used to determinate which operation's name needs 
-*					to be printed.
 */
-void printStacks(t_node* endA, t_node* endB, int debug, int opNumber);
+void printStacks(int opNumber, t_node* endA, t_node* endB, int debug);
 
 
 /* ------------------------------------------------------------- */

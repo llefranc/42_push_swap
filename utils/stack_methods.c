@@ -6,12 +6,11 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:08:12 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/09 15:22:14 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/11 12:28:19 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
-
+#include "../includes/headers.h"
 
 int sa_sb(t_node* endList, int opNumber)
 {
@@ -60,6 +59,7 @@ int ra_rb(t_node** endList, int opNumber)
 	
 	swapNodesData(&(*endList)->next->data, &(*endList)->data);
 	*endList = (*endList)->next;
+
 	return opNumber;
 }
 
@@ -87,4 +87,3 @@ int rrr(t_node** endA, t_node** endB)
 	rra_rrb(endB, RRB);
 	return RRR;
 }
-
