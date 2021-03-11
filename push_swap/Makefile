@@ -6,15 +6,15 @@
 #    By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/08 16:28:45 by llefranc          #+#    #+#              #
-#    Updated: 2021/03/11 13:01:38 by llefranc         ###   ########.fr        #
+#    Updated: 2021/03/11 13:00:55 by llefranc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	checker
+NAME		=	push_swap
 CC			=	gcc
 FLAGS		=	-g -fsanitize=address -Wall -Wextra -Werror
 
-SRCS		=	checker.c ../utils/manage_stack.c ../utils/stack_methods.c \
+SRCS		=	push_swap.c ../utils/manage_stack.c ../utils/stack_methods.c \
 				../utils/check_and_errors.c
 
 OBJS	=	$(SRCS:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/11 12:30:00 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/11 14:01:30 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,22 @@ typedef struct		s_node
 {
 	int				data;	// Integer that need to be sorted, or list' size 
 							// if this is the neutral node at the end
+	int				color;	// If true, data will be print with color
 	struct s_node*  prev;	// Pointer to previous node
 	struct s_node*  next;	// Pointer to next node
 }					t_node;
+
+
+/* ------------------------------------------------------------- */
+/* --------------------- CHECK_AND_ERRORS.C -------------------- */
+
+void deallocateStacks(t_node* endA, t_node* endB);
+
+int errorMsg(t_node* endA, t_node* endB);
+
+int checkIfInt(char *str, int numOfDigits);
+
+int checkArgs(int ac, char **av);
 
 
 /* ------------------------------------------------------------- */
@@ -96,6 +109,14 @@ void push_back(t_node* endList, const int val);
 *					to be printed.
 */
 void printOpName(int opNumber);
+
+/**
+*   Prints node's data on STDOUT with / without color (depend if data was affected by the 
+*	last operation or not).
+*
+*   @param node	His data will be print.
+*/
+void printNode(t_node* node);
 
 /**
 *   Prints the operation's name and the two stacks on STDOUT if debug option is activated.

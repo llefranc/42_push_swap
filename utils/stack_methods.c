@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:08:12 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/11 12:28:19 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/11 13:55:35 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ int sa_sb(t_node* endList, int opNumber)
 {
 	if (endList->data <= 1)
 		return opNumber;
+
+	endList->next->color = TRUE;
+	endList->next->next->color = TRUE;
 
 	swapNodesData(&endList->next->data, &endList->next->next->data);
 	return opNumber;
@@ -35,6 +38,7 @@ int pa_pb(t_node* stackReceiving, t_node* stackGiving, int opNumber)
 		return opNumber;
 		
 	t_node* tmp = stackGiving->next;
+	tmp->color = TRUE;
 		
 	// removing node from the giving stack
 	tmp->next->prev = stackGiving;
@@ -57,6 +61,8 @@ int ra_rb(t_node** endList, int opNumber)
 	if ((*endList)->data <= 1)
 		return opNumber;
 	
+	(*endList)->color = TRUE;
+	
 	swapNodesData(&(*endList)->next->data, &(*endList)->data);
 	*endList = (*endList)->next;
 
@@ -75,8 +81,11 @@ int rra_rrb(t_node** endList, int opNumber)
 	if ((*endList)->data <= 1)
 		return opNumber;
 	
+	(*endList)->color = TRUE;
+	
 	swapNodesData(&(*endList)->prev->data, &(*endList)->data);
 	*endList = (*endList)->prev;
+	
 	return opNumber;
 }
 

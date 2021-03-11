@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:06:35 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/11 12:49:49 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/11 13:59:24 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_node* createNode(const int val)
 {
 	t_node* newNode = malloc(sizeof(t_node));
 	newNode->data = val;
+	newNode->color = FALSE;
 
 	return newNode;
 }
@@ -82,12 +83,25 @@ void printOpName(int opNumber)
 		ft_putstr_fd("Exec rb:\n\n", 1);
 	else if (opNumber == RR)
 		ft_putstr_fd("Exec rr:\n\n", 1);
-	else if (opNumber == RR)
+	else if (opNumber == RRA)
 		 ft_putstr_fd("Exec rra:\n\n", 1);
-	else if (opNumber == RR)
+	else if (opNumber == RRB)
 		 ft_putstr_fd("Exec rrb:\n\n", 1);
-	else if (opNumber == RR)
+	else if (opNumber == RRR)
 		 ft_putstr_fd("Exec rrr:\n\n", 1);
+}
+
+void printNode(t_node* node)
+{
+	if (node->color)
+	{
+		node->color = FALSE;
+		ft_printf("\033[31m%d\033[0m", node->data);
+	}
+	else
+	{
+		ft_printf("%d", node->data);
+	}
 }
 
 void printStacks(int opNumber, t_node* endA, t_node* endB, int debug)
@@ -106,7 +120,7 @@ void printStacks(int opNumber, t_node* endA, t_node* endB, int debug)
 				|| (endB->data - i == endA->data)))
 				// || (endA->data < endB->data && endA->data + i == endB->data)))
 		{
-			ft_printf("%d", tmpA->data);
+			printNode(tmpA);
 			tmpA = tmpA->next;
 		}
 		ft_printf("\t");
@@ -115,7 +129,7 @@ void printStacks(int opNumber, t_node* endA, t_node* endB, int debug)
 				|| (endA->data - i == endB->data)))
 				// || (endB->data < endA->data && endB->data + i == endA->data)))
 		{
-			ft_printf("%d", tmpB->data);
+			printNode(tmpB);
 			tmpB = tmpB->next;
 		}
 		ft_putchar_fd('\n', 1);
@@ -123,5 +137,6 @@ void printStacks(int opNumber, t_node* endA, t_node* endB, int debug)
 		if (endA->data +i != endB->data && endA->data != endB->data + i)
 			++i;
 	}
+	
 	ft_printf("\n-\t-\nA\tB\n----------------------------------------\n\n");
 }
