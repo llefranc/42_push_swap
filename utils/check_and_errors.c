@@ -6,27 +6,30 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 12:58:17 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/11 12:59:08 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:37:39 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
 
-void deallocateStacks(t_node* endA, t_node* endB)
+void deallocateStacks(t_twoStacks* st, t_node* instruct)
 {
-	while (endA->next != endA)
-		deleteNode(endA->next);
-	free(endA);
+	while (st && st->endA && st->endA->next != st->endA)
+		deleteNode(st->endA->next);
+	st ? free(st->endA) : 0;
 
-	while (endB->next != endB)
-		deleteNode(endB->next);
-	free(endB);
+	while (st && st->endB && st->endB->next != st->endB)
+		deleteNode(st->endB->next);
+	st ? free(st->endB) : 0;
+
+	while (instruct && instruct->next != instruct)
+		deleteNode(instruct->next);
+	free(instruct);
 }
 
-int errorMsg(t_node* endA, t_node* endB)
+int errorMsg(t_twoStacks* st, t_node* instruct)
 {
-	if (endA && endB)
-		deallocateStacks(endA, endB);
+	deallocateStacks(st, instruct);
 	
 	ft_putstr_fd("Error\n", STDERR_FILENO);
 	return FALSE;

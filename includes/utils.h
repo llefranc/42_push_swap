@@ -6,12 +6,12 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/11 14:01:30 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:11:31 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-#define PUSH_SWAP_H
+#ifndef UTILS_H
+#define UTILS_H
 
 
 /* ------------------------------------------------------------- */
@@ -20,18 +20,7 @@
 #define FALSE 0
 #define TRUE 1
 
-#define INIT 0
-#define SA 1
-#define SB 2
-#define SS 3
-#define PA 4
-#define PB 5
-#define RA 6
-#define RB 7
-#define RR 8
-#define RRA 9
-#define RRB 10
-#define RRR 11
+enum e_instructions { INIT, SA, SB, SS, PA, PB, RA, RB, RR, RRA, RRB, RRR };
 
 
 /* ------------------------------------------------------------- */
@@ -40,19 +29,34 @@
 typedef struct		s_node
 {
 	int				data;	// Integer that need to be sorted, or list' size 
-							// if this is the neutral node at the end
-	int				color;	// If true, data will be print with color
-	struct s_node*  prev;	// Pointer to previous node
-	struct s_node*  next;	// Pointer to next node
+							// if this is the neutral node at the end.
+	int				color;	// If true, data will be print with color.
+	struct s_node*  prev;	// Pointer to previous node.
+	struct s_node*  next;	// Pointer to next node.
 }					t_node;
 
+typedef struct	s_twoStacks
+{
+	t_node*	endA;			// Neutral node of the first stack.
+	t_node* endB;			// Neutral node of the second stack.
+}				t_twoStacks;
 
 /* ------------------------------------------------------------- */
 /* --------------------- CHECK_AND_ERRORS.C -------------------- */
 
-void deallocateStacks(t_node* endA, t_node* endB);
+/**
+*	Deallocates all lists previously allocated, including their neutral
+*	nodes. Does nothing if an argument is  NULL;
+*
+*	@param st		Pointer to a structure containing 2 pointers to stack A and stack B.
+*	@param instruct	Set of instructions implemented as a list, will be deallocated.
+*/
+void deallocateStacks(t_twoStacks* st, t_node* instruct);
 
-int errorMsg(t_node* endA, t_node* endB);
+/**
+*
+*/
+int errorMsg(t_twoStacks* st, t_node* instruct);
 
 int checkIfInt(char *str, int numOfDigits);
 
@@ -123,11 +127,10 @@ void printNode(t_node* node);
 *
 *   @param opNumber	The operation number used to determinate which operation's name needs 
 *					to be printed.
-*	@param endA		The first stack to print.
-*	@param endB		The second stack to print.
+*	@param st		Pointer to a structure containing 2 pointers to stack A and stack B.
 *	@param debug	If TRUE, the function will print the stacks. Does nothing otherwise.
 */
-void printStacks(int opNumber, t_node* endA, t_node* endB, int debug);
+void printStacks(int opNumber, t_twoStacks* st, int debug);
 
 
 /* ------------------------------------------------------------- */
@@ -208,5 +211,17 @@ int rra_rrb(t_node** endList, int opNumber);
 *	@return		The method's code number.
 */
 int rrr(t_node** endA, t_node** endB);
+
+/**
+*	Calls the appropriate instruction.
+*
+*	@param st		Pointer to a structure containing 2 pointers to stack A and stack B.
+*	@param debug	If true, the stacks will be printed on STDOUT after the 
+*					instruction execution.
+*	@param instruct	The instruction to execute (sa, sb, ss, pa, pb, ra, rb, 
+*					rr, rra, rrb, rrr).
+*	@return			True if instruct param was an existing instruction. False otherwise.
+*/
+int execInstruct(t_twoStacks* st, int debug, char *instruct);
 
 #endif

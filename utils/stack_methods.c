@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:08:12 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/11 13:55:35 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:09:58 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,39 @@ int rra_rrb(t_node** endList, int opNumber)
 	return opNumber;
 }
 
-// rrr : rra and rrb at the same time
 int rrr(t_node** endA, t_node** endB)
 {
 	rra_rrb(endA, RRA);
 	rra_rrb(endB, RRB);
 	return RRR;
+}
+
+int execInstruct(t_twoStacks* st, int debug, char *instruct)
+{
+	if (!ft_strcmp(instruct, "sa"))
+		printStacks(sa_sb(st->endA, SA), st, debug);
+	else if (!ft_strcmp(instruct, "sb"))
+		printStacks(sa_sb(st->endB, SB), st, debug);
+	else if (!ft_strcmp(instruct, "ss"))
+		printStacks(ss(st->endA, st->endB), st, debug);
+	else if (!ft_strcmp(instruct, "pa"))
+		printStacks(pa_pb(st->endA, st->endB, PA), st, debug);
+	else if (!ft_strcmp(instruct, "pb"))
+		printStacks(pa_pb(st->endB, st->endA, PB), st, debug);
+	else if (!ft_strcmp(instruct, "ra"))
+		printStacks(ra_rb(&st->endA, RA), st, debug);
+	else if (!ft_strcmp(instruct, "rb"))
+		printStacks(ra_rb(&st->endB, RB), st, debug);
+	else if (!ft_strcmp(instruct, "rr"))
+		printStacks(rr(&st->endA, &st->endB), st, debug);
+	else if (!ft_strcmp(instruct, "rra"))
+		printStacks(rra_rrb(&st->endA, RRA), st, debug);
+	else if (!ft_strcmp(instruct, "rrb"))
+		printStacks(rra_rrb(&st->endB, RRB), st, debug);
+	else if (!ft_strcmp(instruct, "rrr"))
+		printStacks(rrr(&st->endA, &st->endB), st, debug);
+	else
+		return FALSE;
+
+	return TRUE;
 }

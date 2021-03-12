@@ -6,64 +6,35 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 11:51:00 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/11 12:59:05 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:21:13 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
 
-int sortingResultMsg(int b, t_node* endA, t_node *endB)
+int sortingResultMsg(int b, t_twoStacks* st, t_node* instruct)
 {
-	deallocateStacks(endA, endB);
+	deallocateStacks(st, instruct);
 	
 	b == TRUE ? ft_putstr_fd("OK\n", STDOUT_FILENO) : ft_putstr_fd("KO\n", STDOUT_FILENO);
 	return b;
 }
 
-int checkSort(t_node* endA, t_node* endB)
+int checkSort(t_twoStacks* st)
 {
-	if (endB->data != 0)
-		return sortingResultMsg(FALSE, endA, endB);
+	if (st->endB->data != 0)
+		return sortingResultMsg(FALSE, st, NULL);
 
-	t_node* tmp = endA->next;
-	while (tmp->next != endA)
+	t_node* tmp = st->endA->next;
+	while (tmp->next != st->endA)
 	{
 		if (tmp->data > tmp->next->data)
-			return sortingResultMsg(FALSE, endA, endB);
+			return sortingResultMsg(FALSE, st, NULL);
 		
 		tmp = tmp->next;
 	}
 	
-	return sortingResultMsg(TRUE, endA, endB);
-}
-
-int execInstruct(t_node** endA, t_node** endB, int debug, char *instruct)
-{
-	if (!ft_strcmp(instruct, "sa"))
-		printStacks(sa_sb(*endA, SA), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "sb"))
-		printStacks(sa_sb(*endB, SB), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "ss"))
-		printStacks(ss(*endA, *endB), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "pa"))
-		printStacks(pa_pb(*endA, *endB, PA), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "pb"))
-		printStacks(pa_pb(*endB, *endA, PB), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "ra"))
-		printStacks(ra_rb(endA, RA), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "rb"))
-		printStacks(ra_rb(endB, RB), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "rr"))
-		printStacks(rr(endA, endB), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "rra"))
-		printStacks(rra_rrb(endA, RRA), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "rrb"))
-		printStacks(rra_rrb(endB, RRB), *endA, *endB, debug);
-	else if (!ft_strcmp(instruct, "rrr"))
-		printStacks(rrr(endA, endB), *endA, *endB, debug);
-	else
-		return FALSE;
-	return TRUE;
+	return sortingResultMsg(TRUE, st, NULL);
 }
 
 int main(int ac, char **av)
@@ -76,23 +47,24 @@ int main(int ac, char **av)
 		return FALSE;
 
 	// Creating neutral nodes for stack A and B
-	t_node* endA = newEndNode();
-	t_node* endB = newEndNode();
+	t_twoStacks st;
+	st.endA = newEndNode();
+	st.endB = newEndNode();
 
 	// Init stack A
 	int i = 0;
 	while (++i < ac)
-		push_back(endA, ft_atoi(av[i]));
+		push_back(st.endA, ft_atoi(av[i]));
 		
 	// Printing stacks initialized if debug option is activated
-	printStacks(INIT, endA, endB, debug);
+	printStacks(INIT, &st, debug);
 
 	// Reading and executing instructions
 	char *instruct = NULL;
 	while (get_next_line(STDIN_FILENO, &instruct))
-		if (!execInstruct(&endA, &endB, debug, instruct))
-			return errorMsg(endA, endB);
+		if (!execInstruct(&st, debug, instruct))
+			return errorMsg(&st, NULL);
 	
 	// Checking is stack A is sorted and stack B is empty
-	return checkSort(endA, endB);
+	return checkSort(&st);
 }
