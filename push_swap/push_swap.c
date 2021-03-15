@@ -24,61 +24,82 @@
 
 
 // au debut on divise en 2 piles egales
-// > trouver le median qui sera lui aussi inclu dans b
-// > mettre ceux en dessous du median sur B >> choisir RA ou RRA en fonction du nombre de chiffre
+// OK > trouver le median qui sera lui aussi inclu dans b
+// OK > mettre ceux en dessous du median sur B >> choisir RA ou RRA en fonction du nombre de chiffre
 //												en fonction du plus proche d'une extremite + favoriser celui deja
 //												sur le top de la pile (celui en bas prend une instruction en plus)
-// > qunad j'en balance un sur B, SS si 2 +/- median sur A et 2 +/- median sur B
-// > Si pas possible SS, regarder si on peut faire un SA. Quand on va push sur B, regarder si on peut faire un SB avant
-// > Si possible SB en face, sur dernier move de RA faire un SS
+// OK > qunad j'en balance un sur B, SS si 2 +/- median sur A et 2 +/- median sur B
+// OK > Si pas possible SS, regarder si on peut faire un SA. Quand on va push sur B, regarder si on peut faire un SB avant
+// OK > Si possible SB en face, sur dernier move de RA faire un SS
 
 // Ensuite on trie les 2 piles
 // > on cherche les 2 couples que l'on peut amener le plus rapidement sur le haut de la pile pour faire un ss
 // a la fin in equilibre les 2 en regardant dans quelle moitie de la pile se situe le minimum pour A et B
 // en regardant quelle combinaison d'instruction permet de les ramener en faisant le moins d'instruction possible
 
+// Ensuite une fois que tout est trié, on parcourt le set d'instruction pour eliminer certaines et les remplacer
+// par les instructions double (ex : ra sa rb >> rr sa)
+
+// 1 2 9  3 7 10 6 18 -5 29 -6 33 >>>>> serie pour tester
+
 */
 
 
-int checkSaInstruct(t_node* endA)
+int splitStackAInTwo(t_twoStacks *st, int med)
 {
-	if (endA->data < 2)
-		return FALSE;
-
-	return endA->next->data > endA->next->next->data;
-}
-
-int checkSbInstruct(t_node* endB)
-{
-	if (endB->data < 2)
-		return FALSE;
-
-	return endB->next->data < endB->next->next->data;
-}
-
-// Returns true if a SS instruction can occured (first / second of A and first / second of B
-// both need to be swapped)
-int checkSsInstruct(t_twoStacks* st, int med)
-{
-	// Both stacks need at least 2 elems
-	if (st->endA->data < 2 || st->endB->data < 2)
-		return FALSE;
-
-	// If first and second element at top of A are in the same group (inf or sup to med)
-	if (((st->endA->next->data >= med && st->endA->next->next->data >= med) ||
-			(st->endA->next->data < med && st->endA->next->next->data < med)) &&
+	int raIns;
+	int rraIns;
 	
-	// and if first and second element at top of B are in the same group (inf or sup to med)
-			((st->endB->next->data >= med && st->endB->next->next->data >= med) ||
-			(st->endB->next->data < med && st->endB->next->next->data < med)) &&
+	while (findNextNumberToMove(st->endA, med, &raIns, &rraIns))
+	{
+		ft_printf("------------------\n");	
+		ft_printf("med = %d, ra = %d, rra = %d\n", med, raIns, rraIns);	
+		ft_printf("------------------\n");	
 
-	// and if sa and sb can occured
-			(checkSaInstruct(st->endA) &&checkSbInstruct(st->endB)))
-		return TRUE;
+		// moving number < to med with RA (if they're closer to the top)
+		if (raIns <= -rraIns)
+		{
+			while (raIns > 1) // doing ra until 1 because we can in some case optimize last ra instruction with ss instruction
+			{
+				// if ss can occured, we do it. Do not change our target number's position because he's not first and second number at top of A
+				checkSsInstruct(st, med) ? execInstruct(st, TRUE, "ss") : 0;
+				// if ss can't occured, doing sa before changing the numbers at top. SA will occured on the right subgroup because the first number of opposite subgroup isnt first or second numbers at top of A
+				checkSaInstruct(st->endA) ? execInstruct(st, TRUE, "sa") : 0;
 	
-	return FALSE;
-}
+				execInstruct(st, TRUE, "ra");
+				--raIns;
+			}
 
+			if (raIns && checkSbInstruct(st->endB)) // case a swap need to occured in B. Optimizing one ra move and one sb with ss
+				execInstruct(st, TRUE, "ss");
+			else if (raIns)
+				execInstruct(st, TRUE, "ra"); // case ss can't occured
+			else if (checkSbInstruct(st->endB))
+				execInstruct(st, TRUE, "sb"); // case element already at top of A and a sb need to occured
+		}
+
+		// moving number < to med with RRA (if they're closer to the bot)
+		else
+		{
+			while (rraIns++) // doing all rra
+			{
+				// if ss can occured, we do it. Do not change our target number's position because he's not first and second number at top of A
+				checkSsInstruct(st, med) ? execInstruct(st, TRUE, "ss") : 0;
+				// if ss can't occured, doing sa before changing the numbers at top. SA will occured on the right subgroup because the first number of opposite subgroup isnt first or second numbers at top of A
+				checkSaInstruct(st->endA) ? execInstruct(st, TRUE, "sa") : 0;
+				
+				execInstruct(st, TRUE, "rra");
+			}
+
+			if (checkSbInstruct(st->endB))
+				execInstruct(st, TRUE, "sb"); // case element already at top of A and a sb need to occured
+		}
+
+		execInstruct(st, TRUE, "pb");
+	}
+
+	return TRUE; // A ENLVER PEUT ETRE METTRE EN VOID A VOIR
+}
 
 int main(int ac, char **av)
 {
@@ -105,78 +126,56 @@ int main(int ac, char **av)
 	// ----------------- PUSH_SWAP PART -------------------------
 	printStacks(INIT, &st, TRUE);
 	
-	while (1)
+	splitStackAInTwo(&st, med);
+
+	ft_printf("----------- END SPLIT PART ----------\n");
+
+	
+	// 2EME PARTIE DU PROGRAMME COMMENCE ICI, ON FAIT D'ABORD LES DOUBLES SWAP
+	int raIns = 0;
+	int rbIns = 0;
+	int rraIns = 0;
+	int rrbIns = 0;
+
+	// Still at least one couple to swap in stack A and B. If both raIns/rraIns or rbIns/rrbIns = 0, means
+	// findCouple function returned false and this stack is sorted
+
+	// ft_printf("coule in A: %d\n", findCoupleToSwapInA(st.endA, &raIns, &rraIns));
+	// ft_printf("coule in B: %d\n", findCoupleToSwapInB(st.endB, &rbIns, &rrbIns));
+
+	// ft_printf("stackA sorted %d, stack B sorted %d\n", checkIfSorted(st.endA, getMin(st.endA), &less), 
+	// 		checkIfSorted(st.endB, getMax(st.endB), &more));
+	
+	while (findCoupleToSwap(st.endA, getMin(st.endA), &raIns, &rraIns, &less) 
+			&& findCoupleToSwap(st.endB, getMax(st.endB), &rbIns, &rrbIns, &more))
 	{
-		int raIns;
-		int rraIns;
-
-		if (findNextNumberToMove(st.endA, med, &raIns, &rraIns))
-		{
-			ft_printf("------------------\n");	
-			ft_printf("med = %d, ra = %d, rra = %d\n", med, raIns, rraIns);	
-			ft_printf("------------------\n");	
-
-			// moving number < to med with RA (if they're closer to the top)
-			if (raIns <= -rraIns)
-			{
-				while (raIns > 1) // doing ra until 1 because we can in some case optimize last ra instruction with ss instruction
-				{
-					// if ss can occured, we do it. Do not change our target number's position because he's not first and second number at top of A
-					checkSsInstruct(&st, med) ? execInstruct(&st, TRUE, "ss") : 0;
-					// if ss can't occured, doing sa before changing the numbers at top. SA will occured on the right subgroup because the first number of opposite subgroup isnt first or second numbers at top of A
-					checkSaInstruct(st.endA) ? execInstruct(&st, TRUE, "sa") : 0;
-		
-					execInstruct(&st, TRUE, "ra");
-					--raIns;
-				}
-
-				if (raIns && checkSbInstruct(st.endB)) // case a swap need to occured in B. Optimizing one ra move and one sb with ss
-					execInstruct(&st, TRUE, "ss");
-				else if (raIns)
-					execInstruct(&st, TRUE, "ra"); // case ss can't occured
-			}
-
-			// moving number < to med with RRA (if they're closer to the bot)
-			else
-			{
-				while (rraIns++) // doing all rra
-				{
-					// if ss can occured, we do it. Do not change our target number's position because he's not first and second number at top of A
-					checkSsInstruct(&st, med) ? execInstruct(&st, TRUE, "ss") : 0;
-					// if ss can't occured, doing sa before changing the numbers at top. SA will occured on the right subgroup because the first number of opposite subgroup isnt first or second numbers at top of A
-					checkSaInstruct(st.endA) ? execInstruct(&st, TRUE, "sa") : 0;
-					
-					execInstruct(&st, TRUE, "rra");
-				}
-			}
-
-			execInstruct(&st, TRUE, "pb");
-		}
-		else // si plus de nombre en dessous du median
-			break;
+		bringTwoCouplesToSwapToTheTop(&st, raIns, rraIns, rbIns, rrbIns);
+		execInstruct(&st, TRUE, "ss");
 	}
+
+	// A CE STADE, AU MOINS UNE DES 2 STACKS EST TRIEE (PLUS BESOIN DE SWAP, PEUT ETRE BESOIN BOUGER
+	// LA STACK POUR METTRE LA MINI/MAXI VALUE EN HAUT)
+	
+	// Swapping values in A until it's sorted (and B is already sorted)
+	// while (findCoupleToSwap(st.endA, getMin(st.endA), &raIns, &rraIns, &less))
+	// {
+	// 	bringCoupleToSwapToTheTopOfA(&st, raIns, rraIns);
+	// 	execInstruct(&st, TRUE, "sa");
+	// }
+
+	// // Swapping values in B until it's sorted (and A is already sorted)
+	// while (findCoupleToSwap(st.endB, getMax(st.endB), &rbIns, &rrbIns, &more))
+	// {
+	// 	bringCoupleToSwapToTheTopOfB(&st, rbIns, rrbIns);
+	// 	execInstruct(&st, TRUE, "sb");
+	// }
+
 
 	ft_printf("----------- END ----------\n");
 	printStacks(INIT, &st, TRUE);
 
 	
 	// ----------------- CHECKER PART -------------------------
-	// Printing stacks initialized if debug option is activated
-	// printStacks(INIT, endA, endB, TRUE);
-
-	// // Reading and executing instructions
-	// char *line = NULL;
-	// while (get_next_line(STDIN_FILENO, &line))
-	// {
-	// 	ft_printf("------------------\n", med);	
-	// 	ft_printf("med = %d\n", med);	
-	// 	ft_printf("------------------\n", med);	
-
-		
-	// 	if (!execInstruct(&endA, &endB, TRUE, line))
-	// 		return errorMsg(endA, endB, NULL);
-	
-	// }		
 
 	return TRUE;
 }

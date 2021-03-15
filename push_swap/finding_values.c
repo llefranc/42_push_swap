@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 11:55:14 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/12 15:14:14 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:28:06 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,92 +98,166 @@ int findNextNumberToMove(t_node* endList, int med, int *raIns, int *rraIns)
 	return TRUE;
 }
 
-int findCoupleToSwapInA(t_node* endA, int *raIns, int *rraIns)
+int findCoupleToSwap(t_node* endList, t_node* startingNode, int *rIns, int *rrIns, int (*comp)(int, int))
 {
-	// Stack is empty or contains only one elem, no need to swap
-	if (endA->data < 2)
+	// starting node is min for A, max for B. comp is less for A, more for B
+	if (checkIfSorted(endList, startingNode, comp))
 		return FALSE;
 
 	int fromTop = 0;
-	int fromBot = -1; // Case the couple to swap is first at top of A, second at bot of A,
-					  // we need 1 rra instruction to bring the second member to the top of A
-
-	// Checking from the top for the first couple to swap (first > second) (ra instruct)
-	t_node* tmp = endA->next;
-	while (tmp->next != endA)
+	
+	// Checking from the top for the first couple to swap (r instruct)
+	t_node* tmp = endList->next;
+	while (tmp->next != endList)
 	{
-		if (tmp->data > tmp->next->data) // Need to swap
+		if (!comp(tmp->data, tmp->next->data)) // Need to swap, comp will be less func for A, more for B
 			break;
 		tmp = tmp->next;
 		++fromTop;
 	}
 
 	// Case there is no number <= to median number in the stack
-	if (tmp == endA)
+	if (tmp == endList)
 		return FALSE;
 	
-	// Checking from the bottom (rra instruct)
-	if (!(endA->next->data < endA->prev->data))
+	int fromBot = -1; // Case the couple to swap is first at top of stack, second at bot of stack,
+					  // we need 1 rr instruction to bring the second member to the top of stack
+
+	// Checking from the bottom (rr instruct)
+	if (comp(endList->prev->data, endList->next->data)) // if false, one rra move needed and fromBot was set above to -1
 	{
-		t_node* tmp = endA->prev;
-		while (tmp->prev != endA)
+		t_node* tmp = endList->prev;
+		while (tmp->prev != endList)
 		{
-			if (tmp->data < tmp->prev->data) // Need to swap 
+			if (!comp(tmp->prev->data, tmp->data)) // Need to swap, comp will be less func for A, more for B
 				break;
 			tmp = tmp->prev;
 			--fromBot;
 		}
 	}
 
-	*raIns = fromTop;
-	*rraIns = fromBot;
+	*rIns = fromTop;
+	*rrIns = fromBot;
 
 	return TRUE;
 }
 
-// Sets nbInstruct to a pos number (ra instruction) or neg number (rra instruct)
-// to indicates how many moves 
-int findCoupleToSwapInB(t_node* endB, int *rbIns, int *rrbIns)
-{
-	// Stack is empty or contains only one elem, no need to swap
-	if (endB->data < 2)
-		return FALSE;
+// // Sets raIns (0 or positive number) and rraIns (negative number) to indicates how many moves 
+// // need to occured in A to bring a couple to swap at top of A (sa instruct)
+// int findCoupleToSwapInA(t_node* endA, int *raIns, int *rraIns)
+// {
+// 	// Stack is empty or contains only one elem or is already sorted
+// 	if (checkIfSorted(endA, getMin(endA), &less))
+// 		return FALSE;
 
-	int fromTop = 0;
-	int fromBot = -1; // Case the couple to swap is first at top of A, second at bot of A,
-					  // we need 1 rra instruction to bring the second member to the top of A
+// 	int fromTop = 0;
+// 	int fromBot = -1; // Case the couple to swap is first at top of A, second at bot of A,
+// 					  // we need 1 rra instruction to bring the second member to the top of A
 
-	// Checking from the top for the first couple to swap (first > second) (ra instruct)
-	t_node* tmp = endB->next;
-	while (tmp->next != endB)
-	{
-		if (tmp->data < tmp->next->data) // Need to swap
-			break;
-		tmp = tmp->next;
-		++fromTop;
-	}
+// 	// Checking from the top for the first couple to swap (first > second) (ra instruct)
+// 	t_node* tmp = endA->next;
+// 	while (tmp->next != endA)
+// 	{
+// 		if (tmp->data > tmp->next->data) // Need to swap
+// 			break;
+// 		tmp = tmp->next;
+// 		++fromTop;
+// 	}
 
-	// Case there is no number <= to median number in the stack
-	if (tmp == endB)
-		return FALSE;
+// 	// Case there is no number <= to median number in the stack
+// 	if (tmp == endA)
+// 		return FALSE;
 	
-	// Checking from the bottom (rra instruct)
-	if (!(endB->next->data > endB->prev->data))
+// 	// Checking from the bottom (rra instruct)
+// 	if (!(endA->next->data < endA->prev->data))
+// 	{
+// 		t_node* tmp = endA->prev;
+// 		while (tmp->prev != endA)
+// 		{
+// 			if (tmp->data < tmp->prev->data) // Need to swap 
+// 				break;
+// 			tmp = tmp->prev;
+// 			--fromBot;
+// 		}
+// 	}
+
+// 	*raIns = fromTop;
+// 	*rraIns = fromBot;
+
+// 	return TRUE;
+// }
+
+// // Sets rbIns (0 or positive number) and rrbIns (negative number) to indicates how many moves 
+// // need to occured in B to bring a couple to swap at top of B (sb instruct)
+// int findCoupleToSwapInB(t_node* endB, int *rbIns, int *rrbIns)
+// {
+// 	// Stack is empty or contains only one elem or is already sorted
+// 	if (checkIfSorted(endB, getMax(endB), &more))
+// 		return FALSE;
+
+// 	int fromTop = 0;
+// 	int fromBot = -1; // Case the couple to swap is first at top of A, second at bot of A,
+// 					  // we need 1 rra instruction to bring the second member to the top of A
+
+// 	// Checking from the top for the first couple to swap (first > second) (ra instruct)
+// 	t_node* tmp = endB->next;
+// 	while (tmp->next != endB)
+// 	{
+// 		if (tmp->data < tmp->next->data) // Need to swap
+// 			break;
+// 		tmp = tmp->next;
+// 		++fromTop;
+// 	}
+
+// 	// Case there is no number <= to median number in the stack
+// 	if (tmp == endB)
+// 		return FALSE;
+	
+// 	// Checking from the bottom (rra instruct)
+// 	if (!(endB->next->data > endB->prev->data))
+// 	{
+// 		t_node* tmp = endB->prev;
+// 		while (tmp->prev != endB)
+// 		{
+// 			if (tmp->data > tmp->prev->data) // Need to swap 
+// 				break;
+// 			tmp = tmp->prev;
+// 			--fromBot;
+// 		}
+// 	}
+
+// 	*rbIns = fromTop;
+// 	*rrbIns = fromBot;
+
+// 	return TRUE;
+// }
+
+void bringCoupleToSwapToTheTopOfA(t_twoStacks* st, int raIns, int rraIns)
+{
+	if (raIns <= -rraIns)
 	{
-		t_node* tmp = endB->prev;
-		while (tmp->prev != endB)
-		{
-			if (tmp->data > tmp->prev->data) // Need to swap 
-				break;
-			tmp = tmp->prev;
-			--fromBot;
-		}
+		while (raIns--)
+			execInstruct(st, TRUE, "ra");
 	}
+	else
+	{
+		while (rraIns++)
+			execInstruct(st, TRUE, "rra");
+	}
+}
 
-	*rbIns = fromTop;
-	*rrbIns = fromBot;
-
-	return TRUE;
+void bringCoupleToSwapToTheTopOfB(t_twoStacks* st, int rbIns, int rrbIns)
+{
+	if (rbIns <= -rrbIns)
+	{
+		while (rbIns--)
+			execInstruct(st, TRUE, "rb");
+	}
+	else
+	{
+		while (rrbIns++)
+			execInstruct(st, TRUE, "rrb");
+	}
 }
 
 // calcule le meilleur a utiliser entre les rr et les rrr instructs
@@ -197,8 +271,10 @@ void bringTwoCouplesToSwapToTheTop(t_twoStacks* st, int raIns, int rraIns, int r
 	rrIns = raIns > rbIns ? raIns : rbIns;
 	rrrIns = rraIns < rrbIns ? rraIns : rrbIns; // cause neg values
 	
-	// RR instructions
-	if (rrIns <= rrrIns)
+	ft_printf("rrins = %d, rrrIns = %d\n", rrIns, rrrIns);
+	
+	// RR instructions, putting rrr to absolute value for comparison
+	if (rrIns <= -rrrIns)
 	{
 		// Minimum between number of ra and rb correspond to number of rr
 		rrIns = raIns < rbIns ? raIns : rbIns;
@@ -237,4 +313,45 @@ void bringTwoCouplesToSwapToTheTop(t_twoStacks* st, int raIns, int rraIns, int r
 			execInstruct(st, TRUE, "rrb");
 	}
 	
+}
+
+// check if a sa need to occured (first in A > to second in A)
+int checkSaInstruct(t_node* endA)
+{
+	if (endA->data < 2)
+		return FALSE;
+
+	return endA->next->data > endA->next->next->data;
+}
+
+// chheck if a sb need to occured (first in b < to second in B, because B is in reverse order)
+int checkSbInstruct(t_node* endB)
+{
+	if (endB->data < 2)
+		return FALSE;
+
+	return endB->next->data < endB->next->next->data;
+}
+
+// Returns true if a SS instruction can occured (first / second of A and first / second of B
+// both need to be swapped)
+int checkSsInstruct(t_twoStacks* st, int med)
+{
+	// Both stacks need at least 2 elems
+	if (st->endA->data < 2 || st->endB->data < 2)
+		return FALSE;
+
+	// If first and second element at top of A are in the same group (inf or sup to med)
+	if (((st->endA->next->data >= med && st->endA->next->next->data >= med) ||
+			(st->endA->next->data < med && st->endA->next->next->data < med)) &&
+	
+	// and if first and second element at top of B are in the same group (inf or sup to med)
+			((st->endB->next->data >= med && st->endB->next->next->data >= med) ||
+			(st->endB->next->data < med && st->endB->next->next->data < med)) &&
+
+	// and if sa and sb can occured
+			(checkSaInstruct(st->endA) &&checkSbInstruct(st->endB)))
+		return TRUE;
+	
+	return FALSE;
 }

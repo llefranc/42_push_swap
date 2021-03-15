@@ -6,7 +6,7 @@
 #    By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/08 16:28:45 by llefranc          #+#    #+#              #
-#    Updated: 2021/03/12 12:02:20 by llefranc         ###   ########.fr        #
+#    Updated: 2021/03/15 16:37:09 by llefranc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	push_swap
 CC			=	gcc
 FLAGS		=	-g -fsanitize=address -Wall -Wextra -Werror
 
-SRCS		=	push_swap.c finding_values.c ../utils/manage_stack.c ../utils/stack_methods.c \
+SRCS		=	push_swap.c finding_values.c check_if_sorted.c ../utils/manage_stack.c ../utils/stack_methods.c \
 				../utils/check_and_errors.c
 
 HEAD		=	headers.h libftprintf.h push_swap.h utils.h
