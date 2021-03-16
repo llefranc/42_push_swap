@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 09:39:39 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/12 11:58:30 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/16 15:25:59 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <stdio.h>
 
 #include "libftprintf.h"
 #include "utils.h"
-#include "push_swap.h"
+#include "push_swap_v2.h"
 
 #endif

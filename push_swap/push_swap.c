@@ -132,9 +132,9 @@ int main(int ac, char **av)
 
 	
 	// 2EME PARTIE DU PROGRAMME COMMENCE ICI, ON FAIT D'ABORD LES DOUBLES SWAP
-	int raIns = 0;
+	// int raIns = 0;
 	int rbIns = 0;
-	int rraIns = 0;
+	// int rraIns = 0;
 	int rrbIns = 0;
 
 	// Still at least one couple to swap in stack A and B. If both raIns/rraIns or rbIns/rrbIns = 0, means
@@ -146,29 +146,35 @@ int main(int ac, char **av)
 	// ft_printf("stackA sorted %d, stack B sorted %d\n", checkIfSorted(st.endA, getMin(st.endA), &less), 
 	// 		checkIfSorted(st.endB, getMax(st.endB), &more));
 	
-	while (findCoupleToSwap(st.endA, getMin(st.endA), &raIns, &rraIns, &less) 
-			&& findCoupleToSwap(st.endB, getMax(st.endB), &rbIns, &rrbIns, &more))
-	{
-		bringTwoCouplesToSwapToTheTop(&st, raIns, rraIns, rbIns, rrbIns);
-		execInstruct(&st, TRUE, "ss");
-	}
+	// while (findCoupleToSwap(st.endA, getMin(st.endA), &raIns, &rraIns, &less) 
+	// 		&& findCoupleToSwap(st.endB, getMax(st.endB), &rbIns, &rrbIns, &more))
+	// {
+		// ft_printf("ra %d, rb %d, rra %d, rrb %d\n", raIns, rbIns, rraIns, rrbIns);
+	// 	bringTwoCouplesToSwapToTheTop(&st, raIns, rraIns, rbIns, rrbIns);
+	// 	execInstruct(&st, TRUE, "ss");
+	// }
+
 
 	// A CE STADE, AU MOINS UNE DES 2 STACKS EST TRIEE (PLUS BESOIN DE SWAP, PEUT ETRE BESOIN BOUGER
 	// LA STACK POUR METTRE LA MINI/MAXI VALUE EN HAUT)
 	
 	// Swapping values in A until it's sorted (and B is already sorted)
+	// int j = 20;
 	// while (findCoupleToSwap(st.endA, getMin(st.endA), &raIns, &rraIns, &less))
 	// {
+		// ft_printf("ra %d, rra %d\n", raIns, rraIns);
 	// 	bringCoupleToSwapToTheTopOfA(&st, raIns, rraIns);
 	// 	execInstruct(&st, TRUE, "sa");
 	// }
 
 	// // Swapping values in B until it's sorted (and A is already sorted)
-	// while (findCoupleToSwap(st.endB, getMax(st.endB), &rbIns, &rrbIns, &more))
-	// {
-	// 	bringCoupleToSwapToTheTopOfB(&st, rbIns, rrbIns);
-	// 	execInstruct(&st, TRUE, "sb");
-	// }
+	// int j = 10;
+	while (findCoupleToSwap(st.endB, getMax(st.endB), &rbIns, &rrbIns, &more))
+	{
+		ft_printf("rb %d, rrb %d\n", rbIns, rrbIns);
+		bringCoupleToSwapToTheTopOfB(&st, rbIns, rrbIns);
+		execInstruct(&st, TRUE, "sb");
+	}
 
 
 	ft_printf("----------- END ----------\n");

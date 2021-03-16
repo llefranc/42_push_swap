@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 11:55:14 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/15 17:28:06 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/16 11:38:27 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,20 @@ int findNextNumberToMove(t_node* endList, int med, int *raIns, int *rraIns)
 	return TRUE;
 }
 
+int prevNodeData(t_node* endList, t_node* node)
+{
+	if (node->prev == endList)
+		return endList->prev->data;
+	return node->prev->data;
+}
+
+int nextNodeData(t_node* endList, t_node* node)
+{
+	if (node->next == endList)
+		return endList->next->data;
+	return node->next->data;
+}
+
 int findCoupleToSwap(t_node* endList, t_node* startingNode, int *rIns, int *rrIns, int (*comp)(int, int))
 {
 	// starting node is min for A, max for B. comp is less for A, more for B
@@ -110,31 +124,31 @@ int findCoupleToSwap(t_node* endList, t_node* startingNode, int *rIns, int *rrIn
 	t_node* tmp = endList->next;
 	while (tmp->next != endList)
 	{
-		if (!comp(tmp->data, tmp->next->data)) // Need to swap, comp will be less func for A, more for B
+		if (!comp(prevNodeData(endList, tmp), tmp->data) && !comp(tmp->data, tmp->next->data)) // Need to swap, comp will be less func for A, more for B
 			break;
 		tmp = tmp->next;
 		++fromTop;
 	}
 
 	// Case there is no number <= to median number in the stack
-	if (tmp == endList)
+	if (tmp->next == endList)
 		return FALSE;
 	
 	int fromBot = -1; // Case the couple to swap is first at top of stack, second at bot of stack,
 					  // we need 1 rr instruction to bring the second member to the top of stack
 
 	// Checking from the bottom (rr instruct)
-	if (comp(endList->prev->data, endList->next->data)) // if false, one rra move needed and fromBot was set above to -1
-	{
-		t_node* tmp = endList->prev;
+	// if (comp(endList->prev->data, endList->next->data)) // if false, one rra move needed and fromBot was set above to -1
+	// {
+		tmp = endList->prev;
 		while (tmp->prev != endList)
 		{
-			if (!comp(tmp->prev->data, tmp->data)) // Need to swap, comp will be less func for A, more for B
+			if (!comp(tmp->data, nextNodeData(endList, tmp)) && !comp(tmp->prev->data, tmp->data)) // Need to swap, comp will be less func for A, more for B
 				break;
 			tmp = tmp->prev;
 			--fromBot;
 		}
-	}
+	// }
 
 	*rIns = fromTop;
 	*rrIns = fromBot;
