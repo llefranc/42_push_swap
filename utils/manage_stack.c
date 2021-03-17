@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   manage_stack.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
+/*    */
+/*        :::      ::::::::   */
+/*   manage_stack.c :+:      :+:    :+:   */
+/*    +:+ +:+         +:+     */
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/09 15:06:35 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/12 15:07:20 by llefranc         ###   ########.fr       */
-/*                                                                            */
+/*+#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/09 15:06:35 by llefranc          #+#    #+# */
+/*   Updated: 2021/03/17 12:10:40 by llefranc         ###   ########.fr       */
+/*    */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
@@ -64,6 +64,19 @@ void push_back(t_node* endList, const int val)
 		
 	++endList->data;
 }
+
+void push_front (t_node* endList, const int val)
+{
+    t_node* tmp = createNode(val);
+
+    tmp->prev = endList;
+    tmp->next = endList->next;
+    endList->next->prev = tmp;
+    endList->next = tmp;
+    
+    ++endList->data;
+}
+
 
 void printOpName(int opNumber)
 {

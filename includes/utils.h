@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/12 15:11:31 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/17 16:49:40 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 
 #define FALSE 0
 #define TRUE 1
+
+#define STACK_A 1
+#define STACK_B -1
 
 enum e_instructions { INIT, SA, SB, SS, PA, PB, RA, RB, RR, RRA, RRB, RRR };
 
@@ -105,6 +108,15 @@ void swapNodesData(int* a, int* b);
 *   @param val		The new element will have his data sets to val.
 */
 void push_back(t_node* endList, const int val);
+
+/**
+*   Adds a new element at the beginning of the list, before its current first element.
+*   Size is increased. If list is empty, the new element becomes first list element.
+*
+*   @param endList	The neutral node of the list receiving the new element.
+*   @param val		The new element will have his data sets to val.
+*/
+void push_front (t_node* endList, const int val);
 
 /**
 *   Prints the name of the operation on STDOUT.

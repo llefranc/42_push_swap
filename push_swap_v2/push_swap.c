@@ -12,11 +12,10 @@
 
 #include "../includes/headers.h"
 
-// int quicksort(int* array, int med, t_node* begin, t_node* end, t_twoStacks* st)
-// {
-
-// 	return TRUE;
-// }
+// 1: quicksort est plus efficace si l'element pris est le median
+// 2: penser a faire une fonction qui check si la une certaine zone est deja triee
+// 3: possible opti quand plus que 2/3 elements à trier ?
+// 4: faire une fonction qui replace bien le precedent median
 
 int checkSort(t_twoStacks* st)
 {
