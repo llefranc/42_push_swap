@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/17 16:49:40 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:30:13 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 #define STACK_B -1
 
 enum e_instructions { INIT, SA, SB, SS, PA, PB, RA, RB, RR, RRA, RRB, RRR };
+
+int compteur;
 
 
 /* ------------------------------------------------------------- */
@@ -43,6 +45,15 @@ typedef struct	s_twoStacks
 	t_node*	endA;			// Neutral node of the first stack.
 	t_node* endB;			// Neutral node of the second stack.
 }				t_twoStacks;
+
+typedef struct s_sizeParts
+{
+	int infPartSize;		// Size of the inferior part of a serie to sort (to begin to median included)
+	int infPartStack;
+	int supPartSize;		// Size of the superior part of a serie to sort (to median + 1 to end excluded)
+	int supPartStack;
+}				t_sizeParts;
+
 
 /* ------------------------------------------------------------- */
 /* --------------------- CHECK_AND_ERRORS.C -------------------- */

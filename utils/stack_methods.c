@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:08:12 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/12 15:09:58 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:30:23 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int rrr(t_node** endA, t_node** endB)
 
 int execInstruct(t_twoStacks* st, int debug, char *instruct)
 {
+	compteur++;// a enlever
+
 	if (!ft_strcmp(instruct, "sa"))
 		printStacks(sa_sb(st->endA, SA), st, debug);
 	else if (!ft_strcmp(instruct, "sb"))
