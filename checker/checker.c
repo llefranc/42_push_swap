@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 11:51:00 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/12 15:21:13 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/19 16:23:34 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int main(int ac, char **av)
 	// Reading and executing instructions
 	char *instruct = NULL;
 	while (get_next_line(STDIN_FILENO, &instruct))
-		if (!execInstruct(&st, debug, instruct))
+		if (!execInstructChecker(&st, debug, instruct))
 			return errorMsg(&st, NULL);
 	
 	// Checking is stack A is sorted and stack B is empty
