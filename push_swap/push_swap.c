@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:30:11 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/19 15:12:01 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/19 15:35:48 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,50 +51,50 @@ void sortTwoOrThreeElemsOnA(t_twoStacks* st, int size)
 {
 	// Just a single swap for 2 non-sorted elements
 	if (size == 2 && !isSorted(st->endA->next, st->endA->next->next->next, STACK_A))
-		execInstruct(st, FALSE, "sa");
+		execInstruct(st, TRUE, "sa");
 
 	else if (size == 3 && !isSorted(st->endA->next, st->endA->next->next->next->next, STACK_A)) // ex with numbers 1 / 2 / 3
 	{
 		if (st->endA->next->data < st->endA->next->next->data && 
 				st->endA->next->data < st->endA->next->next->next->data) // case 1 / 3 / 2
 		{
-			execInstruct(st, FALSE, "ra"); // saving 1 cause sorted
-			execInstruct(st, FALSE, "sa"); // swap 3 and 2
+			execInstruct(st, TRUE, "ra"); // saving 1 cause sorted
+			execInstruct(st, TRUE, "sa"); // swap 3 and 2
 			--size;
 		}
 		
 		else if (st->endA->next->data > st->endA->next->next->data && 
 				st->endA->next->data > st->endA->next->next->next->data) // case 3 / 2 / 1 or 3 / 1 / 2
 		{
-			execInstruct(st, FALSE, "pb"); // pushing 3
+			execInstruct(st, TRUE, "pb"); // pushing 3
 			if (st->endA->next->data > st->endA->next->next->data) // swapping 1 and 2 if needed
-				execInstruct(st, FALSE, "sa");
+				execInstruct(st, TRUE, "sa");
 			
 			do
-				execInstruct(st, FALSE, "ra"); // saving 1 and 2 cause sorted
+				execInstruct(st, TRUE, "ra"); // saving 1 and 2 cause sorted
 			while (--size > 1);
 
-			execInstruct(st, FALSE, "pa"); // puting back 3 to top of A
+			execInstruct(st, TRUE, "pa"); // puting back 3 to top of A
 		}
 		
 		else // case 2 / 1 / 3 or 2 / 3 / 1
 		{
 			if (st->endA->next->data > st->endA->next->next->data) // case 2 / 1 / 3, swapping 1 and 2
-				execInstruct(st, FALSE, "sa");
+				execInstruct(st, TRUE, "sa");
 			else								// case 2 / 3 / 1
 			{
-				execInstruct(st, FALSE, "pb"); // pushing 2
-				execInstruct(st, FALSE, "sa"); // swapping 3 and 1
-				execInstruct(st, FALSE, "ra"); // saving 1 cause sorted
+				execInstruct(st, TRUE, "pb"); // pushing 2
+				execInstruct(st, TRUE, "sa"); // swapping 3 and 1
+				execInstruct(st, TRUE, "ra"); // saving 1 cause sorted
 				--size;
-				execInstruct(st, FALSE, "pa"); // pushing back 2
+				execInstruct(st, TRUE, "pa"); // pushing back 2
 			}
 		}
 	}
 
 	// Saving at the end of the stack the sorted elements
 	while (size--)
-			execInstruct(st, FALSE, "ra");
+			execInstruct(st, TRUE, "ra");
 }
 
 // si nbInstruct est un nombre neg > rra ; si nombre pos > ra
@@ -169,17 +169,17 @@ void pushToA(t_twoStacks* st, t_node* end, int med)
 	{
 		// Bringing the value to push to top of B and pushing it to A
 		while (rb--)
-			execInstruct(st, FALSE, "rb");
-		execInstruct(st, FALSE, "pa");
+			execInstruct(st, TRUE, "rb");
+		execInstruct(st, TRUE, "pa");
 		
 		// If we just pushed the median on A, saving it at the bottom of A
 		if (st->endA->next->data == med)
-			execInstruct(st, FALSE, "ra");
+			execInstruct(st, TRUE, "ra");
 	}
 
 	// Puting median at its right position, at top of B (it was saved at the bottom of B).
 	// The median is now at its corred position and is sorted.
-	execInstruct(st, FALSE, "rra");
+	execInstruct(st, TRUE, "rra");
 }
 
 // Returns true if the median or a value inferior to the median is present in 
@@ -211,6 +211,7 @@ int findNumberInAToPushToB(t_node* endA, t_node* end, int med, int *ra)
 void pushToB(t_twoStacks* st, t_node* end, int med)
 {
 	int ra;
+	int medianWasLast = FALSE;
 	int tmp = 0;
 	
 	// As long as there are inferior values to median or itself in A
@@ -223,21 +224,28 @@ void pushToB(t_twoStacks* st, t_node* end, int med)
 		
 		// Bringing the value to push to top of A and pushing it to B
 		while (ra--)
-			execInstruct(st, FALSE, "ra");
-		execInstruct(st, FALSE, "pb");
+			execInstruct(st, TRUE, "ra");
+		execInstruct(st, TRUE, "pb");
 
-		// If we just pushed the median on B, saving it at the bottom of B
-		if (st->endB->next->data == med)
-			execInstruct(st, FALSE, "rb");
+		// If we just pushed the median on B, saving it at the bottom of B (except if B contains only 
+		// median value, it's already at bottom)
+		if (st->endB->next->data == med && findNumberInAToPushToB(st->endA, end, med, &ra))
+			st->endB->data != 1 ? execInstruct(st, TRUE, "rb") : 0;
+			
+		// If median value was the last value to be pushed, no need to put it at bottom and to bring 
+		// it back at top : it's already at its correct position in the serie
+		else if (st->endB->next->data == med && !findNumberInAToPushToB(st->endA, end, med, &ra)
+				&& st->endB->data != 1)
+			medianWasLast = TRUE;
 	}
 
 	// Bringing back to top of A the values superior to median
 	while (tmp--)
-		execInstruct(st, FALSE, "rra");
+		execInstruct(st, TRUE, "rra");
 
 	// Puting median at its right position, at top of B (it was saved at the bottom of B).
 	// The median is now at its corred position and is sorted.
-	execInstruct(st, FALSE, "rrb");
+	!medianWasLast ? execInstruct(st, TRUE, "rrb") : 0;
 }
 
 // Returns the end of a serie of elements with a specific size and a specific beginning.
@@ -276,7 +284,7 @@ t_sizeParts* partitionning(t_twoStacks* st, int totalSize, int whichStack)
 		int i = 0;
 		if (whichStack == STACK_B) // FAIRE UNE FOCNTION QUI SORT POUR B, ET UNE POUR A
 			while (i++ < totalSize)
-				execInstruct(st, FALSE, "pa");
+				execInstruct(st, TRUE, "pa");
 		
 		// On stack A, will put the 2 or 3 elements on in the right order and ra 2/3 times to 
 		// save them at the end of stack A

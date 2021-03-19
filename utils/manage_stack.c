@@ -107,27 +107,27 @@ void printOpName(int opNumber)
 	if (opNumber == INIT)
 		ft_printf("Init stacks:\n\n");
 	else if (opNumber == SA)
-		ft_printf("ins %d: Exec sa:\n\n", ++compteur);
+		ft_printf("ins %d: Exec sa:\n\n", compteur);
 	else if (opNumber == SB)
-		ft_printf("ins %d: Exec sb:\n\n", ++compteur);
+		ft_printf("ins %d: Exec sb:\n\n", compteur);
 	else if (opNumber == SS)
-		ft_printf("ins %d: Exec ss:\n\n", ++compteur);
+		ft_printf("ins %d: Exec ss:\n\n", compteur);
 	else if (opNumber == PA)
-		ft_printf("ins %d: Exec pa:\n\n", ++compteur);
+		ft_printf("ins %d: Exec pa:\n\n", compteur);
 	else if (opNumber == PB)
-		ft_printf("ins %d: Exec pb:\n\n", ++compteur);
+		ft_printf("ins %d: Exec pb:\n\n", compteur);
 	else if (opNumber == RA)
-		ft_printf("ins %d: Exec ra:\n\n", ++compteur);
+		ft_printf("ins %d: Exec ra:\n\n", compteur);
 	else if (opNumber == RB)
-		ft_printf("ins %d: Exec rb:\n\n", ++compteur);
+		ft_printf("ins %d: Exec rb:\n\n", compteur);
 	else if (opNumber == RR)
-		ft_printf("ins %d: Exec rr:\n\n", ++compteur);
+		ft_printf("ins %d: Exec rr:\n\n", compteur);
 	else if (opNumber == RRA)
-		 ft_printf("ins %d: Exec rra:\n\n",++compteur);
+		 ft_printf("ins %d: Exec rra:\n\n",compteur);
 	else if (opNumber == RRB)
-		 ft_printf("ins %d: Exec rrb:\n\n",++compteur);
+		 ft_printf("ins %d: Exec rrb:\n\n",compteur);
 	else if (opNumber == RRR)
-		 ft_printf("ins %d: Exec rrr:\n\n",++compteur);
+		 ft_printf("ins %d: Exec rrr:\n\n",compteur);
 }
 
 void printNode(t_node* node)
