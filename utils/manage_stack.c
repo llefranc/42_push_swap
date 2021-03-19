@@ -53,9 +53,11 @@ void swapNodesData(int* a, int* b)
 	*b = tmp;
 }
 
-void push_back(t_node* endList, const int val)
+int push_back(t_node* endList, const int val)
 {
-	t_node* tmp = createNode(val);
+	t_node* tmp;
+	if (!(tmp = createNode(val)))
+		return FALSE;
 
 	tmp->prev = endList->prev;
 	tmp->next = endList;
@@ -63,11 +65,15 @@ void push_back(t_node* endList, const int val)
 	endList->prev = tmp;
 		
 	++endList->data;
+
+	return TRUE;
 }
 
-void push_front (t_node* endList, const int val)
+int push_front(t_node* endList, const int val)
 {
-    t_node* tmp = createNode(val);
+    t_node* tmp;
+	if (!(tmp = createNode(val)))
+		return FALSE;
 
     tmp->prev = endList;
     tmp->next = endList->next;
@@ -75,6 +81,8 @@ void push_front (t_node* endList, const int val)
     endList->next = tmp;
     
     ++endList->data;
+
+	return TRUE;
 }
 
 

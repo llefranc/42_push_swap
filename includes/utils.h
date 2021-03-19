@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/18 16:30:13 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/19 16:13:16 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,9 @@ void swapNodesData(int* a, int* b);
 *
 *   @param endList	The neutral node of the list receiving the new element.
 *   @param val		The new element will have his data sets to val.
+*	@return			True if the element was correctly added, false if an error occured.
 */
-void push_back(t_node* endList, const int val);
+int push_back(t_node* endList, const int val);
 
 /**
 *   Adds a new element at the beginning of the list, before its current first element.
@@ -126,8 +127,9 @@ void push_back(t_node* endList, const int val);
 *
 *   @param endList	The neutral node of the list receiving the new element.
 *   @param val		The new element will have his data sets to val.
+*	@return			True if the element was correctly added, false if an error occured.
 */
-void push_front (t_node* endList, const int val);
+int push_front(t_node* endList, const int val);
 
 /**
 *   Prints the name of the operation on STDOUT.
@@ -236,15 +238,30 @@ int rra_rrb(t_node** endList, int opNumber);
 int rrr(t_node** endA, t_node** endB);
 
 /**
+*	Calls the appropriate instruction, and adds it to the list of instructions.
+*
+*	@param instruct			The list of instruction that will be increased by the instruction to
+*							execute.
+*	@param st				Pointer to a structure containing 2 pointers to stack A and stack B.
+*	@param debug			If true, the stacks will be printed on STDOUT after the 
+*							instruction execution.
+*	@param instructToExe	The instruction to execute (sa, sb, ss, pa, pb, ra, rb, 
+*							rr, rra, rrb, rrr).
+*	@return					True if instruct param was an existing instruction. False otherwise.
+*/
+int execInstructPushSwap(t_node* instruct, t_twoStacks* st, int debug, char *instructToExe);
+
+/**
 *	Calls the appropriate instruction.
 *
-*	@param st		Pointer to a structure containing 2 pointers to stack A and stack B.
-*	@param debug	If true, the stacks will be printed on STDOUT after the 
-*					instruction execution.
-*	@param instruct	The instruction to execute (sa, sb, ss, pa, pb, ra, rb, 
-*					rr, rra, rrb, rrr).
-*	@return			True if instruct param was an existing instruction. False otherwise.
+*	@param st				Pointer to a structure containing 2 pointers to stack A and stack B.
+*	@param debug			If true, the stacks will be printed on STDOUT after the 
+*							instruction execution.
+*	@param instructToExe	The instruction to execute (sa, sb, ss, pa, pb, ra, rb, 
+*							rr, rra, rrb, rrr).
+*	@return					True if instruct param was an existing instruction. False otherwise.
 */
-int execInstruct(t_twoStacks* st, int debug, char *instruct);
+int execInstructChecker(t_twoStacks* st, int debug, char *instructToExe);
+
 
 #endif
