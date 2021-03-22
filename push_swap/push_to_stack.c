@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 15:41:15 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/19 16:16:43 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/22 18:25:36 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,6 @@ int findNumberInBToPushToA(t_node* endB, t_node* end, int med, int *rb)
 	return FALSE;
 }
 
-// Pushes from stack B the median and all values superior to itself to stack A. 
-// After this, the median will be in A and at its correct position in the serie,
-// and so will be sorted.
-void pushToA(t_node* instruct, t_twoStacks* st, t_node* end, int med)
-{
-	int rb;
-	
-	// As long as there are superior values to median or itself in B
-	while (findNumberInBToPushToA(st->endB, end, med, &rb))
-	{
-		// Bringing the value to push to top of B and pushing it to A
-		while (rb--)
-			execInstructPushSwap(instruct, st, TRUE, "rb");
-		execInstructPushSwap(instruct, st, TRUE, "pa");
-		
-		// If we just pushed the median on A, saving it at the bottom of A
-		if (st->endA->next->data == med)
-			execInstructPushSwap(instruct, st, TRUE, "ra");
-	}
-
-	// Puting median at its right position, at top of B (it was saved at the bottom of B).
-	// The median is now at its corred position and is sorted.
-	execInstructPushSwap(instruct, st, TRUE, "rra");
-}
-
 // Returns true if the median or a value inferior to the median is present in 
 // stack A, and sets the number of ra instruct to bring this value to top of 
 // stack A in order to push it to B.
@@ -82,6 +57,107 @@ int findNumberInAToPushToB(t_node* endA, t_node* end, int med, int *ra)
 
 	return FALSE;
 }
+
+// Pushes from stack B the median and all values superior to itself to stack A. 
+// After this, the median will be in A and at its correct position in the serie,
+// and so will be sorted.
+void pushToA(t_node* instruct, t_twoStacks* st, t_node* end, int med)
+{
+	int rb;
+	int medianWasLast = FALSE;
+	
+	// As long as there are superior values to median or itself in B
+	while (findNumberInBToPushToA(st->endB, end, med, &rb))
+	{
+		// Bringing the value to push to top of B and pushing it to A
+		while (rb--)
+			execInstructPushSwap(instruct, st, TRUE, "rb");
+		execInstructPushSwap(instruct, st, TRUE, "pa");
+		
+		// If median value was the last value to be pushed, no need to put it at bottom and to bring 
+		// it back at top : it's already at its correct position in the serie
+		if (st->endA->next->data == med && !findNumberInBToPushToA(st->endB, end, med, &rb))
+			medianWasLast = TRUE;
+		
+		// Otherwise saving the median at the bottom of A
+		else if (st->endA->next->data == med)
+			execInstructPushSwap(instruct, st, TRUE, "ra");
+	}
+
+	// Puting median at its right position, at top of A (it was saved at the bottom of A).
+	// The median is now at its corred position and is sorted.
+	!medianWasLast ? execInstructPushSwap(instruct, st, TRUE, "rra") : 0;
+}
+
+// si nbInstruct est un nombre neg > rrb ; si nombre pos > rb
+// si la fonction return 0 pas de nombre inferieur au median a transferer
+int findNextNumberToMoveOpti(t_node* endList, int med, int *rb, int *rrb)
+{
+	*rb = 0;
+	*rrb = 1;// Because we need one rrb instruction minimum to put it at top of stack
+	
+	// Checking from the top for the first number <= to median number (rb instruct)
+	t_node* tmp = endList->next;
+	while (tmp != endList)
+	{
+		if (tmp->data >= med)
+			break;
+		tmp = tmp->next;
+		++(*rb);
+	}
+
+	// Case there is no number <= to median number in the stack
+	if (tmp == endList)
+		return FALSE;
+
+	// Checking from the bottom (rrb instruct)
+	tmp = endList->prev;
+	while (tmp != endList)
+	{
+		if (tmp->data >= med)
+			break;
+		tmp = tmp->prev;
+		++(*rrb);
+	}
+
+	return TRUE;
+}
+
+void pushToAOpti(t_node* instruct, t_twoStacks* st, t_node* end, int med)
+{
+	int rb = 0;
+	int rrb = 0;
+	int medianWasLast = FALSE;
+	(void)end;
+	
+	// As long as there are superior values to median or itself in B
+	while (findNextNumberToMoveOpti(st->endB, med, &rb, &rrb))
+	{
+		// Bringing median or inf value in the less possibles moves on top 
+		// of A, and then pushing it to B
+		if (rb <= rrb)
+			while (rb--)
+				execInstructPushSwap(instruct, st, TRUE, "rb");
+		else
+			while (rrb--)
+				execInstructPushSwap(instruct, st, TRUE, "rrb");
+		execInstructPushSwap(instruct, st, TRUE, "pa");
+		
+		// If median value was the last value to be pushed, no need to put it at bottom and to bring 
+		// it back at top : it's already at its correct position in the serie
+		if (st->endA->next->data == med && !findNumberInBToPushToA(st->endB, st->endB, med, &rb))
+			medianWasLast = TRUE;
+		
+		// Otherwise saving the median at the bottom of A
+		else if (st->endA->next->data == med)
+			execInstructPushSwap(instruct, st, TRUE, "ra");
+	}
+
+	// Puting median at its right position, at top of A (it was saved at the bottom of A).
+	// The median is now at its corred position and is sorted.
+	!medianWasLast ? execInstructPushSwap(instruct, st, TRUE, "rra") : 0;
+}
+
 
 // Pushes from stack A the median and all values inferior to itself to stack B. 
 // After this, the median will be in B and at its correct position in the serie,

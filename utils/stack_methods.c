@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:08:12 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/19 16:14:42 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/22 18:16:30 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int rrr(t_node** endA, t_node** endB)
 
 int execInstructChecker(t_twoStacks* st, int debug, char *instructToExe)
 {
+	debug = FALSE;
 	compteur++;// a enlever
 
 	if (!ft_strcmp(instructToExe, "sa"))
@@ -130,6 +131,8 @@ int execInstructChecker(t_twoStacks* st, int debug, char *instructToExe)
 
 int execInstructPushSwap(t_node* instruct, t_twoStacks* st, int debug, char *instructToExe)
 {
+	debug = debug == FALSE ? TRUE : FALSE;
+		// debug = TRUE;
 	compteur++;// a enlever
 
 	if (!ft_strcmp(instructToExe, "sa") && push_back(instruct, SA))

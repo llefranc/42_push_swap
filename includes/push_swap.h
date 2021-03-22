@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:32:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/19 16:16:51 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/22 18:01:26 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ int findNumberInAToPushToB(t_node* endA, t_node* end, int med, int *ra);
 void pushToB(t_node* instruct, t_twoStacks* st, t_node* end, int med);
 
 
+void pushToAOpti(t_node* instruct, t_twoStacks* st, t_node* end, int med);
+
+
 // ---------- QUICKSORT.C ----------
 
 t_sizeParts* partitionning(t_node* instruct, t_twoStacks* st, int totalSize, int whichStack);
@@ -85,5 +88,20 @@ int findNextNumberToMove(t_node* endList, int med, int *raIns, int *rraIns);
 
 // sorts only on A, possible opti for B
 void sortTwoOrThreeElemsOnA(t_node* instruct, t_twoStacks* st, int size);
+
+t_sizeParts* initPartitionning(t_node* instruct, t_twoStacks* st);
+
+
+// ---------- OPTI.C ----------
+
+void ssOpti(t_node* endNode, t_node** node);
+
+void papbOpti(t_node* endNode, t_node** node);
+
+void rrrOpti(t_node* endNode, t_node** node);
+
+void rrOpti(t_node* endNode, t_node** node);
+
+void removeUselessInstructions(t_node* instruct);
 
 #endif
