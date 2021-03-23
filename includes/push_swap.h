@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:32:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/22 18:01:26 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 09:17:12 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int findNumberInAToPushToB(t_node* endA, t_node* end, int med, int *ra);
 void pushToB(t_node* instruct, t_twoStacks* st, t_node* end, int med);
 
 
-void pushToAOpti(t_node* instruct, t_twoStacks* st, t_node* end, int med);
+// void pushToAOpti(t_node* instruct, t_twoStacks* st, t_node* end, int med);
 
 
 // ---------- QUICKSORT.C ----------

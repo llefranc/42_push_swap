@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_to_stack.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 15:41:15 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/22 18:25:36 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 09:17:01 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,72 +91,71 @@ void pushToA(t_node* instruct, t_twoStacks* st, t_node* end, int med)
 
 // si nbInstruct est un nombre neg > rrb ; si nombre pos > rb
 // si la fonction return 0 pas de nombre inferieur au median a transferer
-int findNextNumberToMoveOpti(t_node* endList, int med, int *rb, int *rrb)
-{
-	*rb = 0;
-	*rrb = 1;// Because we need one rrb instruction minimum to put it at top of stack
+// int findNextNumberToMoveOpti(t_node* endList, int med, int *rb, int *rrb)
+// {
+// 	*rb = 0;
+// 	*rrb = 1;// Because we need one rrb instruction minimum to put it at top of stack
 	
-	// Checking from the top for the first number <= to median number (rb instruct)
-	t_node* tmp = endList->next;
-	while (tmp != endList)
-	{
-		if (tmp->data >= med)
-			break;
-		tmp = tmp->next;
-		++(*rb);
-	}
+// 	// Checking from the top for the first number <= to median number (rb instruct)
+// 	t_node* tmp = endList->next;
+// 	while (tmp != endList)
+// 	{
+// 		if (tmp->data >= med)
+// 			break;
+// 		tmp = tmp->next;
+// 		++(*rb);
+// 	}
 
-	// Case there is no number <= to median number in the stack
-	if (tmp == endList)
-		return FALSE;
+// 	// Case there is no number <= to median number in the stack
+// 	if (tmp == endList)
+// 		return FALSE;
 
-	// Checking from the bottom (rrb instruct)
-	tmp = endList->prev;
-	while (tmp != endList)
-	{
-		if (tmp->data >= med)
-			break;
-		tmp = tmp->prev;
-		++(*rrb);
-	}
+// 	// Checking from the bottom (rrb instruct)
+// 	tmp = endList->prev;
+// 	while (tmp != endList)
+// 	{
+// 		if (tmp->data >= med)
+// 			break;
+// 		tmp = tmp->prev;
+// 		++(*rrb);
+// 	}
 
-	return TRUE;
-}
+// 	return TRUE;
+// }
 
-void pushToAOpti(t_node* instruct, t_twoStacks* st, t_node* end, int med)
-{
-	int rb = 0;
-	int rrb = 0;
-	int medianWasLast = FALSE;
-	(void)end;
+// void pushToAOpti(t_node* instruct, t_twoStacks* st, int med)
+// {
+// 	int rb = 0;
+// 	int rrb = 0;
+// 	int medianWasLast = FALSE;
 	
-	// As long as there are superior values to median or itself in B
-	while (findNextNumberToMoveOpti(st->endB, med, &rb, &rrb))
-	{
-		// Bringing median or inf value in the less possibles moves on top 
-		// of A, and then pushing it to B
-		if (rb <= rrb)
-			while (rb--)
-				execInstructPushSwap(instruct, st, TRUE, "rb");
-		else
-			while (rrb--)
-				execInstructPushSwap(instruct, st, TRUE, "rrb");
-		execInstructPushSwap(instruct, st, TRUE, "pa");
+// 	// As long as there are superior values to median or itself in B
+// 	while (findNextNumberToMoveOpti(st->endB, med, &rb, &rrb))
+// 	{
+// 		// Bringing median or inf value in the less possibles moves on top 
+// 		// of A, and then pushing it to B
+// 		if (rb <= rrb)
+// 			while (rb--)
+// 				execInstructPushSwap(instruct, st, TRUE, "rb");
+// 		else
+// 			while (rrb--)
+// 				execInstructPushSwap(instruct, st, TRUE, "rrb");
+// 		execInstructPushSwap(instruct, st, TRUE, "pa");
 		
-		// If median value was the last value to be pushed, no need to put it at bottom and to bring 
-		// it back at top : it's already at its correct position in the serie
-		if (st->endA->next->data == med && !findNumberInBToPushToA(st->endB, st->endB, med, &rb))
-			medianWasLast = TRUE;
+// 		// If median value was the last value to be pushed, no need to put it at bottom and to bring 
+// 		// it back at top : it's already at its correct position in the serie
+// 		if (st->endA->next->data == med && !findNumberInBToPushToA(st->endB, st->endB, med, &rb))
+// 			medianWasLast = TRUE;
 		
-		// Otherwise saving the median at the bottom of A
-		else if (st->endA->next->data == med)
-			execInstructPushSwap(instruct, st, TRUE, "ra");
-	}
+// 		// Otherwise saving the median at the bottom of A
+// 		else if (st->endA->next->data == med)
+// 			execInstructPushSwap(instruct, st, TRUE, "ra");
+// 	}
 
-	// Puting median at its right position, at top of A (it was saved at the bottom of A).
-	// The median is now at its corred position and is sorted.
-	!medianWasLast ? execInstructPushSwap(instruct, st, TRUE, "rra") : 0;
-}
+// 	// Puting median at its right position, at top of A (it was saved at the bottom of A).
+// 	// The median is now at its corred position and is sorted.
+// 	!medianWasLast ? execInstructPushSwap(instruct, st, TRUE, "rra") : 0;
+// }
 
 
 // Pushes from stack A the median and all values inferior to itself to stack B. 
@@ -177,7 +176,7 @@ void pushToB(t_node* instruct, t_twoStacks* st, t_node* end, int med)
 		tmp += ra;
 		
 		// Bringing the value to push to top of A and pushing it to B
-		while (ra--)
+        while (ra--)
 			execInstructPushSwap(instruct, st, TRUE, "ra");
 		execInstructPushSwap(instruct, st, TRUE, "pb");
 

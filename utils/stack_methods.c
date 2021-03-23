@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack_methods.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:08:12 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/22 18:16:30 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/22 20:20:58 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ int execInstructChecker(t_twoStacks* st, int debug, char *instructToExe)
 int execInstructPushSwap(t_node* instruct, t_twoStacks* st, int debug, char *instructToExe)
 {
 	debug = debug == FALSE ? TRUE : FALSE;
-		// debug = TRUE;
 	compteur++;// a enlever
 
 	if (!ft_strcmp(instructToExe, "sa") && push_back(instruct, SA))

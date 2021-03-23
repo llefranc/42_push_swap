@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opti.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 17:04:39 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/22 17:08:41 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 10:02:50 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void papbOpti(t_node* endNode, t_node** node)
 		tmp = tmp->next;
 
 	// PA + PB = useless
-	if (((*node)->data == PA && tmp->data == PB) || 
-			((*node)->data == PB && tmp->data == PA))
+	if (tmp != endNode && (((*node)->data == PA && tmp->data == PB) || 
+			((*node)->data == PB && tmp->data == PA)))
 	{
 		deleteNode(tmp);
 		tmp = *node;
@@ -110,8 +110,8 @@ void ssOpti(t_node* endNode, t_node** node)
 	while ((*node)->data == SB && tmp != endNode && (tmp->data == RB || tmp->data == RRB))
 		tmp = tmp->next;
 	
-	if (((*node)->data == SA && tmp->data == SB) || 
-		((*node)->data == SB && tmp->data == SA))
+	if (tmp != endNode && (((*node)->data == SA && tmp->data == SB) || 
+		((*node)->data == SB && tmp->data == SA)))
 	{
 		(*node)->data = SS;
 		deleteNode(tmp);

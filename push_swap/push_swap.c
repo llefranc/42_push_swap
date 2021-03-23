@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:30:11 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/22 18:27:41 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 10:03:06 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,75 @@ void sortTwoOrThreeElemsOnA(t_node* instruct, t_twoStacks* st, int size)
 			execInstructPushSwap(instruct, st, TRUE, "ra");
 }
 
-void printInstruction(int instruct)
+void sortThreeElemsOnB(t_node* instruct, t_twoStacks* st)
+{
+    if (st->endA->next->data < st->endA->next->next->data && 
+			st->endA->next->data < st->endA->next->next->next->data &&
+            st->endA->next->next->data > st->endA->next->next->next->data) // case 1 / 3 / 2
+        execInstructPushSwap(instruct, st, TRUE, "rb");
+        
+    else if (st->endA->next->data < st->endA->next->next->data && 
+			st->endA->next->data < st->endA->next->next->next->data) // case 1 / 2 / 3
+    {
+        execInstructPushSwap(instruct, st, TRUE, "rb");
+        execInstructPushSwap(instruct, st, TRUE, "sb");
+    }
+    
+    else if (st->endA->next->data > st->endA->next->next->data && 
+	    	st->endA->next->data > st->endA->next->next->next->data) // case 3 / 1 / 2
+    {
+        execInstructPushSwap(instruct, st, TRUE, "sb");
+        execInstructPushSwap(instruct, st, TRUE, "rb");
+    }
+
+    else if (st->endA->next->data > st->endA->next->next->data && 
+	    	st->endA->next->data < st->endA->next->next->next->data) // case 2 / 1 / 3
+        execInstructPushSwap(instruct, st, TRUE, "rrb");
+            
+    else // case 2 / 3 / 1
+        execInstructPushSwap(instruct, st, TRUE, "sb");
+}
+
+void sortThreeElemsOnA(t_node* instruct, t_twoStacks* st)
+{
+    if (st->endA->next->data < st->endA->next->next->data && 
+			st->endA->next->data < st->endA->next->next->next->data &&
+            st->endA->next->next->data > st->endA->next->next->next->data) // case 1 / 3 / 2
+    {
+        execInstructPushSwap(instruct, st, TRUE, "sa");
+        execInstructPushSwap(instruct, st, TRUE, "ra");
+    }
+        
+    else if (st->endA->next->data > st->endA->next->next->data && 
+	    	st->endA->next->data > st->endA->next->next->next->data &&
+            st->endA->next->next->data < st->endA->next->next->next->data) // case 3 / 1 / 2
+        execInstructPushSwap(instruct, st, TRUE, "ra");
+
+    else if (st->endA->next->data > st->endA->next->next->data && 
+	    	st->endA->next->data > st->endA->next->next->next->data) // case 3 / 2 / 1
+    {
+        execInstructPushSwap(instruct, st, TRUE, "ra");
+        execInstructPushSwap(instruct, st, TRUE, "sa");
+    }
+
+    else if (st->endA->next->data > st->endA->next->next->data && 
+	    	st->endA->next->data < st->endA->next->next->next->data) // case 2 / 1 / 3
+        execInstructPushSwap(instruct, st, TRUE, "sa");
+            
+    else // case 2 / 3 / 1
+        execInstructPushSwap(instruct, st, TRUE, "rra");
+}
+
+void sortThreeElems(t_node* instruct, t_twoStacks* st, int whichStack)
+{
+    t_node* tmp;
+    tmp = (whichStack == STACK_A) ? st->endA : st->endB;
+    
+    if (!isSorted(tmp->next, tmp, whichStack))
+        whichStack == STACK_A ? sortThreeElemsOnA(instruct, st) : sortThreeElemsOnB(instruct, st);
+}
+
+void printOneInstruction(int instruct)
 {
 	if (instruct == SA)
 		ft_putstr_fd("sa\n", 1);
@@ -98,6 +166,37 @@ void printInstruction(int instruct)
 		ft_putstr_fd("rrr\n", 1);
 }
 
+void printAllInstructions(t_node* instruct)
+{
+    t_node* tmp = instruct->next;
+	while (tmp != instruct)
+	{
+		printOneInstruction(tmp->data);
+		tmp = tmp->next;
+	}
+}
+
+void destroyList(t_node* endNode)
+{
+    t_node* tmp = endNode->next;
+    
+    while (tmp != endNode)
+    {
+        deleteNode(tmp);
+        tmp = endNode->next;
+    }
+    free(endNode);
+}
+
+void cleanExit(t_twoStacks* st, t_node* instruct)
+{
+    destroyList(instruct);
+    destroyList(st->endA);
+    destroyList(st->endB);
+    
+    exit(EXIT_SUCCESS);
+}
+
 int main(int ac, char **av)
 {
 	// Checking if arguments are correct
@@ -109,28 +208,25 @@ int main(int ac, char **av)
 
 	st.endA = newEndNode();
 	st.endB = newEndNode();
+    
 	
 	// Creating stack A
 	int i = 0;
 	while (++i < ac)
 		push_back(st.endA, ft_atoi(av[i]));
 
-	// printStacks(0, &st, TRUE);
+    // Case stack is already sorted, no instructions needed
+    if (isSorted(st.endA->next, st.endA, STACK_A))
+        cleanExit(&st, instruct);
 
-	quicksort(instruct, &st, sizeList(st.endA->next, st.endA), INIT);
-	// quicksort(instruct, &st, sizeList(st.endA->next, st.endA), STACK_A);
+    if (sizeList(st.endA->next, st.endA) == 3)
+        sortThreeElems(instruct, &st, STACK_A);
+	// quicksort(instruct, &st, sizeList(st.endA->next, st.endA), INIT);
 	
-	// printStacks(0, &st, TRUE);
-	// printf("nb instruc %d\n", compteur);
-
 	removeUselessInstructions(instruct);
+    printAllInstructions(instruct);
 
-	t_node* tmp = instruct->next;
-	while (tmp != instruct)
-	{
-		printInstruction(tmp->data);
-		tmp = tmp->next;
-	}
+    printStacks(INIT, &st, TRUE);
 
 	return TRUE;
 }

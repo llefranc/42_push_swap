@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quicksort.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 15:39:33 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/22 18:28:13 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 09:31:34 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,6 @@ t_sizeParts* initPartitionning(t_node* instruct, t_twoStacks* st)
 
 t_sizeParts* partitionning(t_node* instruct, t_twoStacks* st, int totalSize, int whichStack)
 {
-	// Finding begin and end of the serie to sort
-	t_node* begin = (whichStack == STACK_A) ? st->endA->next : st->endB->next;
-	t_node* end = getEndNode(begin, totalSize);
-	
 	// If the serie to sort is 3 elements or less, we don't need quicksort to sort it
 	if (totalSize <= 3)
 	{
@@ -116,12 +112,16 @@ t_sizeParts* partitionning(t_node* instruct, t_twoStacks* st, int totalSize, int
 		
 		// On stack A, will put the 2 or 3 elements on in the right order and ra 2/3 times to 
 		// save them at the end of stack A
-			sortTwoOrThreeElemsOnA(instruct, st, totalSize);
+		sortTwoOrThreeElemsOnA(instruct, st, totalSize);
 		
 		// Sorted, no need to return median value, this recursivity loop will stop
 		return NULL;
 	}
 	
+	// Finding begin and end of the serie to sort
+	t_node* begin = (whichStack == STACK_A) ? st->endA->next : st->endB->next;
+	t_node* end = getEndNode(begin, totalSize);
+    
 	// Finding median
 	t_node* med;
 	if (!(med = findMed(begin, end))) // proteger
@@ -132,11 +132,7 @@ t_sizeParts* partitionning(t_node* instruct, t_twoStacks* st, int totalSize, int
 	sizeParts = malloc(sizeof(*sizeParts)); //proteger
 	calcSizeParts(sizeParts, begin, end, med->data, whichStack);
 
-
-	// if (whichStack == STACK_B && begin == st->endB->next && end == st->endB)
-	// 	pushToAOpti(instruct, st, end, med->data);
-	// else
-		whichStack == STACK_A ? pushToB(instruct, st, end, med->data) : pushToA(instruct, st, end, med->data);
+    whichStack == STACK_A ? pushToB(instruct, st, end, med->data) : pushToA(instruct, st, end, med->data);
 
 	return sizeParts;
 }
