@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:32:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 09:17:12 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/03/23 13:22:14 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void calcSizeParts(t_sizeParts* sizeParts, t_node* begin, t_node* end, int med, 
 
 
 // ---------- PUSH_TO_STACK.C ----------
+
+void pushXTimeTo(int whichStack, t_node* instruct, t_twoStacks* st, int x);
 
 // Returns true if the median or a value superior to the median is present in 
 // stack B, and sets the number of rb instruct to bring this value to top of 
@@ -91,6 +93,9 @@ void sortTwoOrThreeElemsOnA(t_node* instruct, t_twoStacks* st, int size);
 
 t_sizeParts* initPartitionning(t_node* instruct, t_twoStacks* st);
 
+void sortThreeElems(t_node* instruct, t_twoStacks* st, int whichStack);
+
+
 
 // ---------- OPTI.C ----------
 
@@ -103,5 +108,17 @@ void rrrOpti(t_node* endNode, t_node** node);
 void rrOpti(t_node* endNode, t_node** node);
 
 void removeUselessInstructions(t_node* instruct);
+
+// ---------- SORT_SMALL_STACKS.C ----------
+
+void sortThreeElemsOnSmallA(t_node* instruct, t_twoStacks* st);
+
+void sortThreeElemsOnSmallB(t_node* instruct, t_twoStacks* st);
+
+void sortSmallStack(t_node* smallInstruct, t_twoStacks* st, int size);
+
+// void sortThreeElems(t_node* instruct, t_twoStacks* st, int whichStack);
+
+
 
 #endif

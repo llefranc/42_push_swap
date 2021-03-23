@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:30:11 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 10:03:06 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/03/23 13:21:53 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,74 +72,6 @@ void sortTwoOrThreeElemsOnA(t_node* instruct, t_twoStacks* st, int size)
 			execInstructPushSwap(instruct, st, TRUE, "ra");
 }
 
-void sortThreeElemsOnB(t_node* instruct, t_twoStacks* st)
-{
-    if (st->endA->next->data < st->endA->next->next->data && 
-			st->endA->next->data < st->endA->next->next->next->data &&
-            st->endA->next->next->data > st->endA->next->next->next->data) // case 1 / 3 / 2
-        execInstructPushSwap(instruct, st, TRUE, "rb");
-        
-    else if (st->endA->next->data < st->endA->next->next->data && 
-			st->endA->next->data < st->endA->next->next->next->data) // case 1 / 2 / 3
-    {
-        execInstructPushSwap(instruct, st, TRUE, "rb");
-        execInstructPushSwap(instruct, st, TRUE, "sb");
-    }
-    
-    else if (st->endA->next->data > st->endA->next->next->data && 
-	    	st->endA->next->data > st->endA->next->next->next->data) // case 3 / 1 / 2
-    {
-        execInstructPushSwap(instruct, st, TRUE, "sb");
-        execInstructPushSwap(instruct, st, TRUE, "rb");
-    }
-
-    else if (st->endA->next->data > st->endA->next->next->data && 
-	    	st->endA->next->data < st->endA->next->next->next->data) // case 2 / 1 / 3
-        execInstructPushSwap(instruct, st, TRUE, "rrb");
-            
-    else // case 2 / 3 / 1
-        execInstructPushSwap(instruct, st, TRUE, "sb");
-}
-
-void sortThreeElemsOnA(t_node* instruct, t_twoStacks* st)
-{
-    if (st->endA->next->data < st->endA->next->next->data && 
-			st->endA->next->data < st->endA->next->next->next->data &&
-            st->endA->next->next->data > st->endA->next->next->next->data) // case 1 / 3 / 2
-    {
-        execInstructPushSwap(instruct, st, TRUE, "sa");
-        execInstructPushSwap(instruct, st, TRUE, "ra");
-    }
-        
-    else if (st->endA->next->data > st->endA->next->next->data && 
-	    	st->endA->next->data > st->endA->next->next->next->data &&
-            st->endA->next->next->data < st->endA->next->next->next->data) // case 3 / 1 / 2
-        execInstructPushSwap(instruct, st, TRUE, "ra");
-
-    else if (st->endA->next->data > st->endA->next->next->data && 
-	    	st->endA->next->data > st->endA->next->next->next->data) // case 3 / 2 / 1
-    {
-        execInstructPushSwap(instruct, st, TRUE, "ra");
-        execInstructPushSwap(instruct, st, TRUE, "sa");
-    }
-
-    else if (st->endA->next->data > st->endA->next->next->data && 
-	    	st->endA->next->data < st->endA->next->next->next->data) // case 2 / 1 / 3
-        execInstructPushSwap(instruct, st, TRUE, "sa");
-            
-    else // case 2 / 3 / 1
-        execInstructPushSwap(instruct, st, TRUE, "rra");
-}
-
-void sortThreeElems(t_node* instruct, t_twoStacks* st, int whichStack)
-{
-    t_node* tmp;
-    tmp = (whichStack == STACK_A) ? st->endA : st->endB;
-    
-    if (!isSorted(tmp->next, tmp, whichStack))
-        whichStack == STACK_A ? sortThreeElemsOnA(instruct, st) : sortThreeElemsOnB(instruct, st);
-}
-
 void printOneInstruction(int instruct)
 {
 	if (instruct == SA)
@@ -197,6 +129,10 @@ void cleanExit(t_twoStacks* st, t_node* instruct)
     exit(EXIT_SUCCESS);
 }
 
+
+
+
+
 int main(int ac, char **av)
 {
 	// Checking if arguments are correct
@@ -204,29 +140,38 @@ int main(int ac, char **av)
 		return FALSE;
 
 	t_twoStacks st;
-	t_node* instruct = newEndNode();
+	t_node* quicksortInstruct = newEndNode();
+	t_node* smallInstruct = newEndNode();
 
 	st.endA = newEndNode();
 	st.endB = newEndNode();
     
 	
 	// Creating stack A
-	int i = 0;
-	while (++i < ac)
-		push_back(st.endA, ft_atoi(av[i]));
+	int size = 0;
+	while (++size < ac)
+		push_back(st.endA, ft_atoi(av[size]));
 
     // Case stack is already sorted, no instructions needed
     if (isSorted(st.endA->next, st.endA, STACK_A))
-        cleanExit(&st, instruct);
+        cleanExit(&st, quicksortInstruct);
 
-    if (sizeList(st.endA->next, st.endA) == 3)
-        sortThreeElems(instruct, &st, STACK_A);
-	// quicksort(instruct, &st, sizeList(st.endA->next, st.endA), INIT);
+    if (--size <= 5)
+		sortSmallStack(smallInstruct, &st, sizeList(st.endA->next, st.endA));
+    else
+		quicksort(quicksortInstruct, &st, sizeList(st.endA->next, st.endA), INIT);
 	
-	removeUselessInstructions(instruct);
-    printAllInstructions(instruct);
+	// printStacks(INIT, &st, TRUE);
+	
+	removeUselessInstructions(quicksortInstruct);
+	removeUselessInstructions(smallInstruct);
 
-    printStacks(INIT, &st, TRUE);
+    if (size <= 5)
+		printAllInstructions(smallInstruct);
+	else
+		printAllInstructions(quicksortInstruct);
+
+	printStacks(0, &st, TRUE);
 
 	return TRUE;
 }

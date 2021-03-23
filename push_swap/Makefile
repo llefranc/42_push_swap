@@ -6,7 +6,7 @@
 #    By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/08 16:28:45 by llefranc          #+#    #+#              #
-#    Updated: 2021/03/22 17:08:52 by llefranc         ###   ########.fr        #
+#    Updated: 2021/03/23 13:21:34 by llefranc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC			=	gcc
 FLAGS		=	-g -fsanitize=address -Wall -Wextra -Werror
 
 SRCS		=	push_swap.c finding_median.c stack_sizes.c quicksort.c push_to_stack.c opti.c \
-				../utils/manage_stack.c ../utils/stack_methods.c ../utils/check_and_errors.c
+				sort_small_stack.c ../utils/manage_stack.c ../utils/stack_methods.c ../utils/check_and_errors.c
 
 HEAD		=	headers.h libftprintf.h utils.h
 PATH_HEAD	=	../includes/
