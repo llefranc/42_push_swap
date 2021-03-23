@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack_methods.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:08:12 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/22 20:20:58 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/03/23 14:46:12 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int rrr(t_node** endA, t_node** endB)
 	return RRR;
 }
 
-int execInstructChecker(t_twoStacks* st, int debug, char *instructToExe)
+int execInstructChecker(t_allocMem* st, int debug, char *instructToExe)
 {
 	debug = FALSE;
 	compteur++;// a enlever
@@ -129,32 +129,32 @@ int execInstructChecker(t_twoStacks* st, int debug, char *instructToExe)
 	return TRUE;
 }
 
-int execInstructPushSwap(t_node* instruct, t_twoStacks* st, int debug, char *instructToExe)
+int execInstructPushSwap(t_node* instruct, t_allocMem* st, int debug, char *instructToExe)
 {
 	debug = debug == FALSE ? TRUE : FALSE;
 	compteur++;// a enlever
 
-	if (!ft_strcmp(instructToExe, "sa") && push_back(instruct, SA))
+	if (!ft_strcmp(instructToExe, "sa") && push_back(st, instruct, SA))
 		printStacks(sa_sb(st->endA, SA), st, debug);
-	else if (!ft_strcmp(instructToExe, "sb") && push_back(instruct, SB))
+	else if (!ft_strcmp(instructToExe, "sb") && push_back(st, instruct, SB))
 		printStacks(sa_sb(st->endB, SB), st, debug);
-	else if (!ft_strcmp(instructToExe, "ss") && push_back(instruct, SS))
+	else if (!ft_strcmp(instructToExe, "ss") && push_back(st, instruct, SS))
 		printStacks(ss(st->endA, st->endB), st, debug);
-	else if (!ft_strcmp(instructToExe, "pa") && push_back(instruct, PA))
+	else if (!ft_strcmp(instructToExe, "pa") && push_back(st, instruct, PA))
 		printStacks(pa_pb(st->endA, st->endB, PA), st, debug);
-	else if (!ft_strcmp(instructToExe, "pb") && push_back(instruct, PB))
+	else if (!ft_strcmp(instructToExe, "pb") && push_back(st, instruct, PB))
 		printStacks(pa_pb(st->endB, st->endA, PB), st, debug);
-	else if (!ft_strcmp(instructToExe, "ra") && push_back(instruct, RA))
+	else if (!ft_strcmp(instructToExe, "ra") && push_back(st, instruct, RA))
 		printStacks(ra_rb(&st->endA, RA), st, debug);
-	else if (!ft_strcmp(instructToExe, "rb") && push_back(instruct, RB))
+	else if (!ft_strcmp(instructToExe, "rb") && push_back(st, instruct, RB))
 		printStacks(ra_rb(&st->endB, RB), st, debug);
-	else if (!ft_strcmp(instructToExe, "rr") && push_back(instruct, RR))
+	else if (!ft_strcmp(instructToExe, "rr") && push_back(st, instruct, RR))
 		printStacks(rr(&st->endA, &st->endB), st, debug);
-	else if (!ft_strcmp(instructToExe, "rra") && push_back(instruct, RRA))
+	else if (!ft_strcmp(instructToExe, "rra") && push_back(st, instruct, RRA))
 		printStacks(rra_rrb(&st->endA, RRA), st, debug);
-	else if (!ft_strcmp(instructToExe, "rrb") && push_back(instruct, RRB))
+	else if (!ft_strcmp(instructToExe, "rrb") && push_back(st, instruct, RRB))
 		printStacks(rra_rrb(&st->endB, RRB), st, debug);
-	else if (!ft_strcmp(instructToExe, "rrr") && push_back(instruct, RRR))
+	else if (!ft_strcmp(instructToExe, "rrr") && push_back(st, instruct, RRR))
 		printStacks(rrr(&st->endA, &st->endB), st, debug);
 	else
 		return FALSE;

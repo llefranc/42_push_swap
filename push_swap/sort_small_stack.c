@@ -6,13 +6,13 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 13:14:38 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 13:21:22 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:16:15 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
 
-void sortThreeElemsOnSmallA(t_node* instruct, t_twoStacks* st)
+void sortThreeElemsOnSmallA(t_node* instruct, t_allocMem* st)
 {
     if (st->endA->next->data < st->endA->next->next->data && 
 			st->endA->next->data < st->endA->next->next->next->data &&
@@ -42,7 +42,7 @@ void sortThreeElemsOnSmallA(t_node* instruct, t_twoStacks* st)
         execInstructPushSwap(instruct, st, TRUE, "rra");
 }
 
-void sortThreeElemsOnSmallB(t_node* instruct, t_twoStacks* st)
+void sortThreeElemsOnSmallB(t_node* instruct, t_allocMem* st)
 {
     if (st->endB->next->data < st->endB->next->next->data && 
 			st->endB->next->data < st->endB->next->next->next->data &&
@@ -71,7 +71,7 @@ void sortThreeElemsOnSmallB(t_node* instruct, t_twoStacks* st)
         execInstructPushSwap(instruct, st, TRUE, "sb");
 }
 
-void sortSmallStack(t_node* smallInstruct, t_twoStacks* st, int size)
+void sortSmallStack(t_node* smallInstruct, t_allocMem* st, int size)
 {
 	// If stack already sorted, the program would have exit before this function
 	if (size == 2)
@@ -106,12 +106,3 @@ void sortSmallStack(t_node* smallInstruct, t_twoStacks* st, int size)
 		pushXTimeTo(STACK_A, smallInstruct, st, 3);
 	}
 }
-
-// void sortThreeElems(t_node* instruct, t_twoStacks* st, int whichStack)
-// {
-//     t_node* tmp;
-//     tmp = (whichStack == STACK_A) ? st->endA : st->endB;
-    
-//     if (!isSorted(tmp->next, tmp, whichStack))
-//         whichStack == STACK_A ? sortThreeElemsOnA(instruct, st) : sortThreeElemsOnB(instruct, st);
-// }

@@ -6,11 +6,61 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 15:39:33 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 12:01:34 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:37:55 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
+
+void sortTwoOrThreeElemsOnA(t_node* instruct, t_allocMem* st, int size)
+{
+	// Just a single swap for 2 non-sorted elements
+	if (size == 2 && !isSorted(st->endA->next, st->endA->next->next->next, STACK_A))
+		execInstructPushSwap(instruct, st, TRUE, "sa");
+
+	else if (size == 3 && !isSorted(st->endA->next, st->endA->next->next->next->next, STACK_A)) // ex with numbers 1 / 2 / 3
+	{
+		if (st->endA->next->data < st->endA->next->next->data && 
+				st->endA->next->data < st->endA->next->next->next->data) // case 1 / 3 / 2
+		{
+			execInstructPushSwap(instruct, st, TRUE, "ra"); // saving 1 cause sorted
+			execInstructPushSwap(instruct, st, TRUE, "sa"); // swap 3 and 2
+			--size;
+		}
+		
+		else if (st->endA->next->data > st->endA->next->next->data && 
+				st->endA->next->data > st->endA->next->next->next->data) // case 3 / 2 / 1 or 3 / 1 / 2
+		{
+			execInstructPushSwap(instruct, st, TRUE, "pb"); // pushing 3
+			if (st->endA->next->data > st->endA->next->next->data) // swapping 1 and 2 if needed
+				execInstructPushSwap(instruct, st, TRUE, "sa");
+			
+			do
+				execInstructPushSwap(instruct, st, TRUE, "ra"); // saving 1 and 2 cause sorted
+			while (--size > 1);
+
+			execInstructPushSwap(instruct, st, TRUE, "pa"); // puting back 3 to top of A
+		}
+		
+		else // case 2 / 1 / 3 or 2 / 3 / 1
+		{
+			if (st->endA->next->data > st->endA->next->next->data) // case 2 / 1 / 3, swapping 1 and 2
+				execInstructPushSwap(instruct, st, TRUE, "sa");
+			else								// case 2 / 3 / 1
+			{
+				execInstructPushSwap(instruct, st, TRUE, "pb"); // pushing 2
+				execInstructPushSwap(instruct, st, TRUE, "sa"); // swapping 3 and 1
+				execInstructPushSwap(instruct, st, TRUE, "ra"); // saving 1 cause sorted
+				--size;
+				execInstructPushSwap(instruct, st, TRUE, "pa"); // pushing back 2
+			}
+		}
+	}
+
+	// Saving at the end of the stack the sorted elements
+	while (size--)
+			execInstructPushSwap(instruct, st, TRUE, "ra");
+}
 
 // si nbInstruct est un nombre neg > rra ; si nombre pos > ra
 // si la fonction return 0 pas de nombre inferieur au median a transferer
@@ -46,20 +96,19 @@ int findNextNumberToMove(t_node* endList, int med, int *ra, int *rra)
 	return TRUE;
 }
 
-t_sizeParts* initPartitionning(t_node* instruct, t_twoStacks* st)
+t_sizeParts* initPartitionning(t_node* instruct, t_allocMem* st)
 {
 	// Finding begin and end of the serie to sort
 	t_node* begin = st->endA->next;
 	t_node* end = st->endA;
 	
 	// Finding median
-	t_node* med;
-	if (!(med = findMed(begin, end))) // proteger
-		return NULL;
-
+	t_node* med = findMed(st, begin, end);
+		
 	// Finding the size of the two parts of the serie for the next recursive loop
 	t_sizeParts* sizeParts;
-	sizeParts = malloc(sizeof(*sizeParts)); //proteger
+	if (!(sizeParts = malloc(sizeof(*sizeParts))))
+		cleanExit(st, EXIT_FAILURE);
 	calcSizeParts(sizeParts, begin, end, med->data, STACK_A);
 
 	int ra = 0;
@@ -99,7 +148,7 @@ t_sizeParts* initPartitionning(t_node* instruct, t_twoStacks* st)
 }
 
 
-t_sizeParts* partitionning(t_node* instruct, t_twoStacks* st, int totalSize, int whichStack)
+t_sizeParts* partitionning(t_node* instruct, t_allocMem* st, int totalSize, int whichStack)
 {
 	// If the serie to sort is 3 elements or less, we don't need quicksort to sort it
 	if (totalSize <= 3)
@@ -123,13 +172,12 @@ t_sizeParts* partitionning(t_node* instruct, t_twoStacks* st, int totalSize, int
 	t_node* end = getEndNode(begin, totalSize);
     
 	// Finding median
-	t_node* med;
-	if (!(med = findMed(begin, end))) // proteger
-		return NULL;
+	t_node* med = findMed(st, begin, end);
 
 	// Finding the size of the two parts of the serie for the next recursive loop
 	t_sizeParts* sizeParts;
-	sizeParts = malloc(sizeof(*sizeParts)); //proteger
+	if (!(sizeParts = malloc(sizeof(*sizeParts))))
+		cleanExit(st, EXIT_FAILURE);
 	calcSizeParts(sizeParts, begin, end, med->data, whichStack);
 
     whichStack == STACK_A ? pushToB(instruct, st, end, med->data) : pushToA(instruct, st, end, med->data);
@@ -137,7 +185,7 @@ t_sizeParts* partitionning(t_node* instruct, t_twoStacks* st, int totalSize, int
 	return sizeParts;
 }
 
-void quicksort(t_node* instruct, t_twoStacks* st, int totalSize, int whichStack)
+void quicksort(t_node* instruct, t_allocMem* st, int totalSize, int whichStack)
 {
 	t_sizeParts* sizeParts;
 	

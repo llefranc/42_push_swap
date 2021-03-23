@@ -6,13 +6,13 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 12:58:17 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/12 15:37:39 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:17:43 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
 
-void deallocateStacks(t_twoStacks* st, t_node* instruct)
+void deallocateStacks(t_allocMem* st, t_node* instruct)
 {
 	while (st && st->endA && st->endA->next != st->endA)
 		deleteNode(st->endA->next);
@@ -27,7 +27,7 @@ void deallocateStacks(t_twoStacks* st, t_node* instruct)
 	free(instruct);
 }
 
-int errorMsg(t_twoStacks* st, t_node* instruct)
+int errorMsg(t_allocMem* st, t_node* instruct)
 {
 	deallocateStacks(st, instruct);
 	

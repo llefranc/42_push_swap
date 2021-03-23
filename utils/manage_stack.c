@@ -14,11 +14,12 @@
 
 int compteur = 0;
 
-t_node* newEndNode()
+t_node* newEndNode(t_allocMem* st)
 {
 	t_node* endList;
 	
-	endList = malloc(sizeof(t_node));
+	if (!(endList = malloc(sizeof(t_node))))
+		cleanExit(st, EXIT_FAILURE);
 	endList->next = endList;
 	endList->prev = endList;
 
@@ -37,9 +38,11 @@ void deleteNode(t_node *toDelete)
 	free(toDelete);
 }
 
-t_node* createNode(const int val)
+t_node* createNode(t_allocMem* st, const int val)
 {
-	t_node* newNode = malloc(sizeof(t_node));
+	t_node* newNode;
+	if (!(newNode = malloc(sizeof(t_node))))
+		cleanExit(st, EXIT_FAILURE);
 	newNode->data = val;
 	newNode->color = FALSE;
 
@@ -53,11 +56,11 @@ void swapNodesData(int* a, int* b)
 	*b = tmp;
 }
 
-int push_back(t_node* endList, const int val)
+int push_back(t_allocMem* st, t_node* endList, const int val)
 {
 	t_node* tmp;
-	if (!(tmp = createNode(val)))
-		return FALSE;
+	if (!(tmp = createNode(st, val)))
+		cleanExit(st, EXIT_FAILURE);
 
 	tmp->prev = endList->prev;
 	tmp->next = endList;
@@ -69,11 +72,11 @@ int push_back(t_node* endList, const int val)
 	return TRUE;
 }
 
-int push_front(t_node* endList, const int val)
+int push_front(t_allocMem* st, t_node* endList, const int val)
 {
     t_node* tmp;
-	if (!(tmp = createNode(val)))
-		return FALSE;
+	if (!(tmp = createNode(st, val)))
+		cleanExit(st, EXIT_FAILURE);
 
     tmp->prev = endList;
     tmp->next = endList->next;
@@ -151,7 +154,7 @@ void printNode(t_node* node)
 	}
 }
 
-void printStacks(int opNumber, t_twoStacks* st, int debug)
+void printStacks(int opNumber, t_allocMem* st, int debug)
 {
 	if (!debug)
 		return ;

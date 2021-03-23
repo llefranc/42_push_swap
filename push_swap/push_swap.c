@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:30:11 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 13:21:53 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:45:09 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,55 +22,7 @@
 // ajouter truc qui genere la liste d'instruction
 
 // sorts only on A, possible opti for B
-void sortTwoOrThreeElemsOnA(t_node* instruct, t_twoStacks* st, int size)
-{
-	// Just a single swap for 2 non-sorted elements
-	if (size == 2 && !isSorted(st->endA->next, st->endA->next->next->next, STACK_A))
-		execInstructPushSwap(instruct, st, TRUE, "sa");
 
-	else if (size == 3 && !isSorted(st->endA->next, st->endA->next->next->next->next, STACK_A)) // ex with numbers 1 / 2 / 3
-	{
-		if (st->endA->next->data < st->endA->next->next->data && 
-				st->endA->next->data < st->endA->next->next->next->data) // case 1 / 3 / 2
-		{
-			execInstructPushSwap(instruct, st, TRUE, "ra"); // saving 1 cause sorted
-			execInstructPushSwap(instruct, st, TRUE, "sa"); // swap 3 and 2
-			--size;
-		}
-		
-		else if (st->endA->next->data > st->endA->next->next->data && 
-				st->endA->next->data > st->endA->next->next->next->data) // case 3 / 2 / 1 or 3 / 1 / 2
-		{
-			execInstructPushSwap(instruct, st, TRUE, "pb"); // pushing 3
-			if (st->endA->next->data > st->endA->next->next->data) // swapping 1 and 2 if needed
-				execInstructPushSwap(instruct, st, TRUE, "sa");
-			
-			do
-				execInstructPushSwap(instruct, st, TRUE, "ra"); // saving 1 and 2 cause sorted
-			while (--size > 1);
-
-			execInstructPushSwap(instruct, st, TRUE, "pa"); // puting back 3 to top of A
-		}
-		
-		else // case 2 / 1 / 3 or 2 / 3 / 1
-		{
-			if (st->endA->next->data > st->endA->next->next->data) // case 2 / 1 / 3, swapping 1 and 2
-				execInstructPushSwap(instruct, st, TRUE, "sa");
-			else								// case 2 / 3 / 1
-			{
-				execInstructPushSwap(instruct, st, TRUE, "pb"); // pushing 2
-				execInstructPushSwap(instruct, st, TRUE, "sa"); // swapping 3 and 1
-				execInstructPushSwap(instruct, st, TRUE, "ra"); // saving 1 cause sorted
-				--size;
-				execInstructPushSwap(instruct, st, TRUE, "pa"); // pushing back 2
-			}
-		}
-	}
-
-	// Saving at the end of the stack the sorted elements
-	while (size--)
-			execInstructPushSwap(instruct, st, TRUE, "ra");
-}
 
 void printOneInstruction(int instruct)
 {
@@ -120,18 +72,25 @@ void destroyList(t_node* endNode)
     free(endNode);
 }
 
-void cleanExit(t_twoStacks* st, t_node* instruct)
+void cleanExit(t_allocMem* st, int ret)
 {
-    destroyList(instruct);
-    destroyList(st->endA);
-    destroyList(st->endB);
+    st->endA ? destroyList(st->endA) : 0;
+    st->endB ? destroyList(st->endB) : 0;
+    st->smallIns ? destroyList(st->smallIns) : 0;
+    st->quickIns ? destroyList(st->quickIns) : 0;
+    st->selecIns ? destroyList(st->selecIns) : 0;
     
-    exit(EXIT_SUCCESS);
+    exit(ret);
 }
 
-
-
-
+void initStruct(t_allocMem* st)
+{
+	st->endA = NULL;
+	st->endB = NULL;
+	st->smallIns = NULL;
+	st->quickIns = NULL;
+	st->selecIns = NULL;
+}
 
 int main(int ac, char **av)
 {
@@ -139,39 +98,40 @@ int main(int ac, char **av)
 	if (!checkArgs(ac, av))
 		return FALSE;
 
-	t_twoStacks st;
-	t_node* quicksortInstruct = newEndNode();
-	t_node* smallInstruct = newEndNode();
-
-	st.endA = newEndNode();
-	st.endB = newEndNode();
+	t_allocMem st;
+	initStruct(&st);
+	st.endA = newEndNode(&st);
+	st.endB = newEndNode(&st);
+	st.smallIns = newEndNode(&st);
+	st.quickIns = newEndNode(&st);
+	st.selecIns = newEndNode(&st);
     
 	
 	// Creating stack A
 	int size = 0;
 	while (++size < ac)
-		push_back(st.endA, ft_atoi(av[size]));
+		push_back(&st, st.endA, ft_atoi(av[size]));
 
     // Case stack is already sorted, no instructions needed
     if (isSorted(st.endA->next, st.endA, STACK_A))
-        cleanExit(&st, quicksortInstruct);
+        cleanExit(&st, EXIT_SUCCESS);
 
     if (--size <= 5)
-		sortSmallStack(smallInstruct, &st, sizeList(st.endA->next, st.endA));
+		sortSmallStack(st.smallIns, &st, sizeList(st.endA->next, st.endA));
     else
-		quicksort(quicksortInstruct, &st, sizeList(st.endA->next, st.endA), INIT);
+		quicksort(st.quickIns, &st, sizeList(st.endA->next, st.endA), INIT);
 	
 	// printStacks(INIT, &st, TRUE);
 	
-	removeUselessInstructions(quicksortInstruct);
-	removeUselessInstructions(smallInstruct);
+	removeUselessInstructions(st.quickIns);
+	removeUselessInstructions(st.smallIns);
 
     if (size <= 5)
-		printAllInstructions(smallInstruct);
+		printAllInstructions(st.smallIns);
 	else
-		printAllInstructions(quicksortInstruct);
+		printAllInstructions(st.quickIns);
 
-	printStacks(0, &st, TRUE);
+	// printStacks(0, &st, TRUE);
 
 	return TRUE;
 }

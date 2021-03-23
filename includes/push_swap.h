@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:32:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 13:22:14 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:25:01 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void copyIntoArray(t_node *begin, t_node* end, int* array);
 int* createArray(t_node* begin, t_node* end, int* size);
 
 // return median value
-t_node* findMed(t_node* begin, t_node* end);
+t_node* findMed(t_allocMem* st, t_node* begin, t_node* end);
 
 
 // ---------- STACK_SIZES.C ----------
@@ -49,7 +49,7 @@ void calcSizeParts(t_sizeParts* sizeParts, t_node* begin, t_node* end, int med, 
 
 // ---------- PUSH_TO_STACK.C ----------
 
-void pushXTimeTo(int whichStack, t_node* instruct, t_twoStacks* st, int x);
+void pushXTimeTo(int whichStack, t_node* instruct, t_allocMem* st, int x);
 
 // Returns true if the median or a value superior to the median is present in 
 // stack B, and sets the number of rb instruct to bring this value to top of 
@@ -59,7 +59,7 @@ int findNumberInBToPushToA(t_node* endB, t_node* end, int med, int *rb);
 // Pushes from stack B the median and all values superior to itself to stack A. 
 // After this, the median will be in A and at its correct position in the serie,
 // and so will be sorted.
-void pushToA(t_node* instruct, t_twoStacks* st, t_node* end, int med);
+void pushToA(t_node* instruct, t_allocMem* st, t_node* end, int med);
 
 // Returns true if the median or a value inferior to the median is present in 
 // stack A, and sets the number of ra instruct to bring this value to top of 
@@ -69,31 +69,32 @@ int findNumberInAToPushToB(t_node* endA, t_node* end, int med, int *ra);
 // Pushes from stack A the median and all values inferior to itself to stack B. 
 // After this, the median will be in B and at its correct position in the serie,
 // and so will be sorted.
-void pushToB(t_node* instruct, t_twoStacks* st, t_node* end, int med);
+void pushToB(t_node* instruct, t_allocMem* st, t_node* end, int med);
 
 
-// void pushToAOpti(t_node* instruct, t_twoStacks* st, t_node* end, int med);
+// void pushToAOpti(t_node* instruct, t_allocMem* st, t_node* end, int med);
 
 
 // ---------- QUICKSORT.C ----------
 
-t_sizeParts* partitionning(t_node* instruct, t_twoStacks* st, int totalSize, int whichStack);
+void sortTwoOrThreeElemsOnA(t_node* instruct, t_allocMem* st, int size);
 
-void quicksort(t_node* instruct, t_twoStacks* st, int totalSize, int whichStack);
+int findNextNumberToMove(t_node* endList, int med, int *raIns, int *rraIns);
+
+t_sizeParts* initPartitionning(t_node* instruct, t_allocMem* st);
+
+t_sizeParts* partitionning(t_node* instruct, t_allocMem* st, int totalSize, int whichStack);
+
+void quicksort(t_node* instruct, t_allocMem* st, int totalSize, int whichStack);
+
 
 
 // ---------- PUSH_SWAP.C ----------
 
 // si nbInstruct est un nombre neg > rra ; si nombre pos > ra
 // si la fonction return 0 pas de nombre inferieur au median a transferer
-int findNextNumberToMove(t_node* endList, int med, int *raIns, int *rraIns);
 
-// sorts only on A, possible opti for B
-void sortTwoOrThreeElemsOnA(t_node* instruct, t_twoStacks* st, int size);
-
-t_sizeParts* initPartitionning(t_node* instruct, t_twoStacks* st);
-
-void sortThreeElems(t_node* instruct, t_twoStacks* st, int whichStack);
+void sortThreeElems(t_node* instruct, t_allocMem* st, int whichStack);
 
 
 
@@ -111,13 +112,13 @@ void removeUselessInstructions(t_node* instruct);
 
 // ---------- SORT_SMALL_STACKS.C ----------
 
-void sortThreeElemsOnSmallA(t_node* instruct, t_twoStacks* st);
+void sortThreeElemsOnSmallA(t_node* instruct, t_allocMem* st);
 
-void sortThreeElemsOnSmallB(t_node* instruct, t_twoStacks* st);
+void sortThreeElemsOnSmallB(t_node* instruct, t_allocMem* st);
 
-void sortSmallStack(t_node* smallInstruct, t_twoStacks* st, int size);
+void sortSmallStack(t_node* smallInstruct, t_allocMem* st, int size);
 
-// void sortThreeElems(t_node* instruct, t_twoStacks* st, int whichStack);
+// void sortThreeElems(t_node* instruct, t_allocMem* st, int whichStack);
 
 
 

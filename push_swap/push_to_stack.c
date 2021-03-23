@@ -6,13 +6,13 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 15:41:15 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 13:22:24 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:17:15 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
 
-void pushXTimeTo(int whichStack, t_node* instruct, t_twoStacks* st, int x)
+void pushXTimeTo(int whichStack, t_node* instruct, t_allocMem* st, int x)
 {
 	while (whichStack == STACK_A && x--)
 		execInstructPushSwap(instruct, st, TRUE, "pa");
@@ -69,7 +69,7 @@ int findNumberInAToPushToB(t_node* endA, t_node* end, int med, int *ra)
 // Pushes from stack B the median and all values superior to itself to stack A. 
 // After this, the median will be in A and at its correct position in the serie,
 // and so will be sorted.
-void pushToA(t_node* instruct, t_twoStacks* st, t_node* end, int med)
+void pushToA(t_node* instruct, t_allocMem* st, t_node* end, int med)
 {
 	int rb;
 	int medianWasLast = FALSE;
@@ -100,7 +100,7 @@ void pushToA(t_node* instruct, t_twoStacks* st, t_node* end, int med)
 // Pushes from stack A the median and all values inferior to itself to stack B. 
 // After this, the median will be in B and at its correct position in the serie,
 // and so will be sorted.
-void pushToB(t_node* instruct, t_twoStacks* st, t_node* end, int med)
+void pushToB(t_node* instruct, t_allocMem* st, t_node* end, int med)
 {
 	int ra;
 	int medianWasLast = FALSE;

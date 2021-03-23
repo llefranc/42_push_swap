@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/19 16:13:16 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:44:49 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ typedef struct		s_node
 	struct s_node*  next;	// Pointer to next node.
 }					t_node;
 
-typedef struct	s_twoStacks
+typedef struct	s_allocMem
 {
 	t_node*	endA;			// Neutral node of the first stack.
 	t_node* endB;			// Neutral node of the second stack.
-}				t_twoStacks;
+	t_node* smallIns;		// List of instructions for small stack algo.
+	t_node* quickIns;		// List of instructions for quicksort algo.
+	t_node* selecIns;		// List of instructions for selec algo.
+}				t_allocMem;
 
 typedef struct s_sizeParts
 {
@@ -65,12 +68,15 @@ typedef struct s_sizeParts
 *	@param st		Pointer to a structure containing 2 pointers to stack A and stack B.
 *	@param instruct	Set of instructions implemented as a list, will be deallocated.
 */
-void deallocateStacks(t_twoStacks* st, t_node* instruct);
+void deallocateStacks(t_allocMem* st, t_node* instruct);
+
+void cleanExit(t_allocMem* st, int ret);
+
 
 /**
 *
 */
-int errorMsg(t_twoStacks* st, t_node* instruct);
+int errorMsg(t_allocMem* st, t_node* instruct);
 
 int checkIfInt(char *str, int numOfDigits);
 
@@ -86,7 +92,7 @@ int checkArgs(int ac, char **av);
 *
 *	@return	The new neutral node allocated.
 */
-t_node* newEndNode();
+t_node* newEndNode(t_allocMem* st);
 
 /**
 *   Removes from the list a node deallocates it.
@@ -101,7 +107,7 @@ void deleteNode(t_node *toDelete);
 *   @param val  The new node's data.
 *   @return		The new node allocated.
 */
-t_node* createNode(const int val);
+t_node* createNode(t_allocMem* st, const int val);
 
 /**
 *   Swaps two nodes' data.
@@ -119,7 +125,7 @@ void swapNodesData(int* a, int* b);
 *   @param val		The new element will have his data sets to val.
 *	@return			True if the element was correctly added, false if an error occured.
 */
-int push_back(t_node* endList, const int val);
+int push_back(t_allocMem* st, t_node* endList, const int val);
 
 /**
 *   Adds a new element at the beginning of the list, before its current first element.
@@ -129,7 +135,7 @@ int push_back(t_node* endList, const int val);
 *   @param val		The new element will have his data sets to val.
 *	@return			True if the element was correctly added, false if an error occured.
 */
-int push_front(t_node* endList, const int val);
+int push_front(t_allocMem* st, t_node* endList, const int val);
 
 /**
 *   Prints the name of the operation on STDOUT.
@@ -155,7 +161,7 @@ void printNode(t_node* node);
 *	@param st		Pointer to a structure containing 2 pointers to stack A and stack B.
 *	@param debug	If TRUE, the function will print the stacks. Does nothing otherwise.
 */
-void printStacks(int opNumber, t_twoStacks* st, int debug);
+void printStacks(int opNumber, t_allocMem* st, int debug);
 
 
 /* ------------------------------------------------------------- */
@@ -249,7 +255,7 @@ int rrr(t_node** endA, t_node** endB);
 *							rr, rra, rrb, rrr).
 *	@return					True if instruct param was an existing instruction. False otherwise.
 */
-int execInstructPushSwap(t_node* instruct, t_twoStacks* st, int debug, char *instructToExe);
+int execInstructPushSwap(t_node* instruct, t_allocMem* st, int debug, char *instructToExe);
 
 /**
 *	Calls the appropriate instruction.
@@ -261,7 +267,7 @@ int execInstructPushSwap(t_node* instruct, t_twoStacks* st, int debug, char *ins
 *							rr, rra, rrb, rrr).
 *	@return					True if instruct param was an existing instruction. False otherwise.
 */
-int execInstructChecker(t_twoStacks* st, int debug, char *instructToExe);
+int execInstructChecker(t_allocMem* st, int debug, char *instructToExe);
 
 
 #endif
