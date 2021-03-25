@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:32:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 14:25:01 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 13:08:49 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,7 @@ void sortThreeElemsOnSmallB(t_node* instruct, t_allocMem* st);
 
 void sortSmallStack(t_node* smallInstruct, t_allocMem* st, int size);
 
-// void sortThreeElems(t_node* instruct, t_allocMem* st, int whichStack);
-
+void initStruct(t_allocMem* st);
 
 
 #endif

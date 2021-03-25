@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 14:44:49 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 13:20:23 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,17 @@ typedef struct s_sizeParts
 *	@param st		Pointer to a structure containing 2 pointers to stack A and stack B.
 *	@param instruct	Set of instructions implemented as a list, will be deallocated.
 */
-void deallocateStacks(t_allocMem* st, t_node* instruct);
-
 void cleanExit(t_allocMem* st, int ret);
 
 
 /**
 *
 */
-int errorMsg(t_allocMem* st, t_node* instruct);
+void errorMsg(t_allocMem* st);
 
 int checkIfInt(char *str, int numOfDigits);
 
-int checkArgs(int ac, char **av);
+int checkArgs(int ac, char **av, int* debug);
 
 
 /* ------------------------------------------------------------- */

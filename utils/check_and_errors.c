@@ -6,33 +6,51 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 12:58:17 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 14:17:43 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 13:25:06 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
 
-void deallocateStacks(t_allocMem* st, t_node* instruct)
+void destroyList(t_node* endNode)
 {
-	while (st && st->endA && st->endA->next != st->endA)
-		deleteNode(st->endA->next);
-	st ? free(st->endA) : 0;
-
-	while (st && st->endB && st->endB->next != st->endB)
-		deleteNode(st->endB->next);
-	st ? free(st->endB) : 0;
-
-	while (instruct && instruct->next != instruct)
-		deleteNode(instruct->next);
-	free(instruct);
+    t_node* tmp = endNode->next;
+    
+    while (tmp != endNode)
+    {
+        deleteNode(tmp);
+        tmp = endNode->next;
+    }
+    free(endNode);
 }
 
-int errorMsg(t_allocMem* st, t_node* instruct)
+void cleanExit(t_allocMem* st, int ret)
 {
-	deallocateStacks(st, instruct);
-	
+	if (st)
+    {
+		st->endA ? destroyList(st->endA) : 0;
+		st->endB ? destroyList(st->endB) : 0;
+		st->smallIns ? destroyList(st->smallIns) : 0;
+		st->quickIns ? destroyList(st->quickIns) : 0;
+		st->selecIns ? destroyList(st->selecIns) : 0;
+	}
+    
+    exit(ret);
+}
+
+void initStruct(t_allocMem* st)
+{
+	st->endA = NULL;
+	st->endB = NULL;
+	st->smallIns = NULL;
+	st->quickIns = NULL;
+	st->selecIns = NULL;
+}
+
+void errorMsg(t_allocMem* st)
+{
 	ft_putstr_fd("Error\n", STDERR_FILENO);
-	return FALSE;
+	cleanExit(st, EXIT_FAILURE);
 }
 
 int checkIfInt(char *str, int numOfDigits)
@@ -45,13 +63,17 @@ int checkIfInt(char *str, int numOfDigits)
 	return TRUE;
 }
 
-int checkArgs(int ac, char **av)
+int checkArgs(int ac, char** av, int* debug)
 {
 	// Case no args, checker displays nothing and quit
-	if (ac == 1)
+	if (ac == 1 || (ac == 2 && ft_strcmp(av[1], "-v")))
 		return FALSE;
 
+	// Case debug option is activated
 	int i = 0;
+	if (!ft_strcmp(av[1], "-v"))
+		*debug = ++i;
+
 	while (++i < ac)
 	{
 		// tmp should be only made of digits
@@ -60,13 +82,13 @@ int checkArgs(int ac, char **av)
 
 		// Checking if it's a number between INT_MAX / INT_MIN
 		if (!ft_strisdigit(tmp) || !checkIfInt(av[i], ft_strlen(tmp)))
-			return errorMsg(NULL, NULL);
+			return FALSE;
 		
 		// Checking if there is no duplicates values
 		int j = i;
 		while (++j < ac)
 			if (!ft_strcmp(av[i], av[j]))
-				return errorMsg(NULL, NULL);
+				return FALSE;
 	}
 	
 	return TRUE;

@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 15:08:12 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 14:46:12 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 13:27:53 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,6 @@ int rrr(t_node** endA, t_node** endB)
 
 int execInstructChecker(t_allocMem* st, int debug, char *instructToExe)
 {
-	debug = FALSE;
-	compteur++;// a enlever
-
 	if (!ft_strcmp(instructToExe, "sa"))
 		printStacks(sa_sb(st->endA, SA), st, debug);
 	else if (!ft_strcmp(instructToExe, "sb"))
@@ -131,8 +128,8 @@ int execInstructChecker(t_allocMem* st, int debug, char *instructToExe)
 
 int execInstructPushSwap(t_node* instruct, t_allocMem* st, int debug, char *instructToExe)
 {
-	debug = debug == FALSE ? TRUE : FALSE;
-	compteur++;// a enlever
+	// Comment this line if you want to print the instruction
+	debug = FALSE;
 
 	if (!ft_strcmp(instructToExe, "sa") && push_back(st, instruct, SA))
 		printStacks(sa_sb(st->endA, SA), st, debug);

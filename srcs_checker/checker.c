@@ -6,65 +6,74 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 11:51:00 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/19 16:23:34 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 13:51:45 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
 
-int sortingResultMsg(int b, t_twoStacks* st, t_node* instruct)
+void sortingResultMsg(int b, t_allocMem* st)
 {
-	deallocateStacks(st, instruct);
-	
 	b == TRUE ? ft_putstr_fd("OK\n", STDOUT_FILENO) : ft_putstr_fd("KO\n", STDOUT_FILENO);
-	return b;
+	cleanExit(st, b);
 }
 
-int checkSort(t_twoStacks* st)
+void checkSort(t_allocMem* st)
 {
 	if (st->endB->data != 0)
-		return sortingResultMsg(FALSE, st, NULL);
+		sortingResultMsg(FALSE, st);
 
 	t_node* tmp = st->endA->next;
 	while (tmp->next != st->endA)
 	{
 		if (tmp->data > tmp->next->data)
-			return sortingResultMsg(FALSE, st, NULL);
+			sortingResultMsg(FALSE, st);
 		
 		tmp = tmp->next;
 	}
 	
-	return sortingResultMsg(TRUE, st, NULL);
+	sortingResultMsg(TRUE, st);
 }
 
 int main(int ac, char **av)
 {
-	// A FAIRE LA CONFIG DEBUG
-	int debug = TRUE;
+	int debug = FALSE;
 
-	// Checking if arguments are correct
-	if (!checkArgs(ac, av))
-		return FALSE;
+	// Checking if arguments are correct, setting debug to TRUE if -v option is present
+	if (!checkArgs(ac, av, &debug))
+		errorMsg(NULL);
 
 	// Creating neutral nodes for stack A and B
-	t_twoStacks st;
-	st.endA = newEndNode();
-	st.endB = newEndNode();
+	t_allocMem st;
+	initStruct(&st);
+	st.endA = newEndNode(&st);
+	st.endB = newEndNode(&st);
 
 	// Init stack A
-	int i = 0;
+	int i;
+	i = (debug == TRUE) ? 1 : 0;
 	while (++i < ac)
-		push_back(st.endA, ft_atoi(av[i]));
+		push_back(&st, st.endA, ft_atoi(av[i]));
 		
 	// Printing stacks initialized if debug option is activated
 	printStacks(INIT, &st, debug);
 
 	// Reading and executing instructions
 	char *instruct = NULL;
-	while (get_next_line(STDIN_FILENO, &instruct))
+	int ret = 0;
+	while ((ret = get_next_line(STDIN_FILENO, &instruct)) == TRUE)
+	{
 		if (!execInstructChecker(&st, debug, instruct))
-			return errorMsg(&st, NULL);
+			errorMsg(&st);
+		free(instruct);
+	}
 	
-	// Checking is stack A is sorted and stack B is empty
-	return checkSort(&st);
+	// If an error occured during get_next_line
+	if (ret == -1)
+		errorMsg(&st);
+	
+	// Checking is stack A is sorted and stack B is empty, printing 
+	// the result on STDOUT and freeing all memory allocated
+	checkSort(&st);
+	return 0;
 }

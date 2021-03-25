@@ -6,23 +6,11 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:30:11 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 14:45:09 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 13:24:56 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
-
-// quicksort avec 2 stacks
-// >> on push sur B les inf et median, et on remonte le med au dessus
-// >> on push sur A les sup et median, et on remonte le median au dess
-// >> si serie de 2 ou 3 sur le haut de la stack A, on swap et on les push en dessous >> ra
-// >> si serie de 2 ou 3 sur B >> on repush sur A
-// ajouter opti si cession deja triee
-// ajouter option si median transfere en dernier
-// ajouter truc qui genere la liste d'instruction
-
-// sorts only on A, possible opti for B
-
 
 void printOneInstruction(int instruct)
 {
@@ -60,38 +48,6 @@ void printAllInstructions(t_node* instruct)
 	}
 }
 
-void destroyList(t_node* endNode)
-{
-    t_node* tmp = endNode->next;
-    
-    while (tmp != endNode)
-    {
-        deleteNode(tmp);
-        tmp = endNode->next;
-    }
-    free(endNode);
-}
-
-void cleanExit(t_allocMem* st, int ret)
-{
-    st->endA ? destroyList(st->endA) : 0;
-    st->endB ? destroyList(st->endB) : 0;
-    st->smallIns ? destroyList(st->smallIns) : 0;
-    st->quickIns ? destroyList(st->quickIns) : 0;
-    st->selecIns ? destroyList(st->selecIns) : 0;
-    
-    exit(ret);
-}
-
-void initStruct(t_allocMem* st)
-{
-	st->endA = NULL;
-	st->endB = NULL;
-	st->smallIns = NULL;
-	st->quickIns = NULL;
-	st->selecIns = NULL;
-}
-
 int main(int ac, char **av)
 {
 	// Checking if arguments are correct
@@ -116,12 +72,11 @@ int main(int ac, char **av)
     if (isSorted(st.endA->next, st.endA, STACK_A))
         cleanExit(&st, EXIT_SUCCESS);
 
+	// Calling the proper algo to sort the stack
     if (--size <= 5)
 		sortSmallStack(st.smallIns, &st, sizeList(st.endA->next, st.endA));
     else
 		quicksort(st.quickIns, &st, sizeList(st.endA->next, st.endA), INIT);
-	
-	// printStacks(INIT, &st, TRUE);
 	
 	removeUselessInstructions(st.quickIns);
 	removeUselessInstructions(st.smallIns);
@@ -130,8 +85,6 @@ int main(int ac, char **av)
 		printAllInstructions(st.smallIns);
 	else
 		printAllInstructions(st.quickIns);
-
-	// printStacks(0, &st, TRUE);
 
 	return TRUE;
 }

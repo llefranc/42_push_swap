@@ -88,57 +88,34 @@ int push_front(t_allocMem* st, t_node* endList, const int val)
 	return TRUE;
 }
 
-
 void printOpName(int opNumber)
 {
-	// if (opNumber == INIT)
-	// 	ft_putstr_fd("Init stacks:\n\n", 1);
-	// else if (opNumber == SA)
-	// 	ft_putstr_fd("Exec sa:\n\n", 1);
-	// else if (opNumber == SB)
-	// 	ft_putstr_fd("Exec sb:\n\n", 1);
-	// else if (opNumber == SS)
-	// 	ft_putstr_fd("Exec ss:\n\n", 1);
-	// else if (opNumber == PA)
-	// 	ft_putstr_fd("Exec pa:\n\n", 1);
-	// else if (opNumber == PB)
-	// 	ft_putstr_fd("Exec pb:\n\n", 1);
-	// else if (opNumber == RA)
-	// 	ft_putstr_fd("Exec ra:\n\n", 1);
-	// else if (opNumber == RB)
-	// 	ft_putstr_fd("Exec rb:\n\n", 1);
-	// else if (opNumber == RR)
-	// 	ft_putstr_fd("Exec rr:\n\n", 1);
-	// else if (opNumber == RRA)
-	// 	 ft_putstr_fd("Exec rra:\n\n", 1);
-	// else if (opNumber == RRB)
-	// 	 ft_putstr_fd("Exec rrb:\n\n", 1);
-	// else if (opNumber == RRR)
-	// 	 ft_putstr_fd("Exec rrr:\n\n", 1);
+	static int compteur;
+
 	if (opNumber == INIT)
 		ft_printf("Init stacks:\n\n");
 	else if (opNumber == SA)
-		ft_printf("ins %d: Exec sa:\n\n", compteur);
+		ft_printf("ins %d: Exec sa:\n\n", ++compteur);
 	else if (opNumber == SB)
-		ft_printf("ins %d: Exec sb:\n\n", compteur);
+		ft_printf("ins %d: Exec sb:\n\n", ++compteur);
 	else if (opNumber == SS)
-		ft_printf("ins %d: Exec ss:\n\n", compteur);
+		ft_printf("ins %d: Exec ss:\n\n", ++compteur);
 	else if (opNumber == PA)
-		ft_printf("ins %d: Exec pa:\n\n", compteur);
+		ft_printf("ins %d: Exec pa:\n\n", ++compteur);
 	else if (opNumber == PB)
-		ft_printf("ins %d: Exec pb:\n\n", compteur);
+		ft_printf("ins %d: Exec pb:\n\n", ++compteur);
 	else if (opNumber == RA)
-		ft_printf("ins %d: Exec ra:\n\n", compteur);
+		ft_printf("ins %d: Exec ra:\n\n", ++compteur);
 	else if (opNumber == RB)
-		ft_printf("ins %d: Exec rb:\n\n", compteur);
+		ft_printf("ins %d: Exec rb:\n\n", ++compteur);
 	else if (opNumber == RR)
-		ft_printf("ins %d: Exec rr:\n\n", compteur);
+		ft_printf("ins %d: Exec rr:\n\n", ++compteur);
 	else if (opNumber == RRA)
-		 ft_printf("ins %d: Exec rra:\n\n",compteur);
+		 ft_printf("ins %d: Exec rra:\n\n", ++compteur);
 	else if (opNumber == RRB)
-		 ft_printf("ins %d: Exec rrb:\n\n",compteur);
+		 ft_printf("ins %d: Exec rrb:\n\n", ++compteur);
 	else if (opNumber == RRR)
-		 ft_printf("ins %d: Exec rrr:\n\n",compteur);
+		 ft_printf("ins %d: Exec rrr:\n\n", ++compteur);
 }
 
 void printNode(t_node* node)
@@ -149,9 +126,7 @@ void printNode(t_node* node)
 		ft_printf("\033[31m%-12d\033[0m", node->data);
 	}
 	else
-	{
 		ft_printf("%-12d", node->data);
-	}
 }
 
 void printStacks(int opNumber, t_allocMem* st, int debug)
