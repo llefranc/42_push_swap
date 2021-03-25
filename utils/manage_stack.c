@@ -60,7 +60,7 @@ int push_back(t_allocMem* st, t_node* endList, const int val)
 {
 	t_node* tmp;
 	if (!(tmp = createNode(st, val)))
-		cleanExit(st, EXIT_FAILURE);
+		errorMsg(st);
 
 	tmp->prev = endList->prev;
 	tmp->next = endList;
@@ -76,7 +76,7 @@ int push_front(t_allocMem* st, t_node* endList, const int val)
 {
     t_node* tmp;
 	if (!(tmp = createNode(st, val)))
-		cleanExit(st, EXIT_FAILURE);
+		errorMsg(st);
 
     tmp->prev = endList;
     tmp->next = endList->next;

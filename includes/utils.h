@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 16:34:50 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 13:20:23 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 14:12:06 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ int rrr(t_node** endA, t_node** endB);
 *							rr, rra, rrb, rrr).
 *	@return					True if instruct param was an existing instruction. False otherwise.
 */
-int execInstructPushSwap(t_node* instruct, t_allocMem* st, int debug, char *instructToExe);
+int execInstructPushSwap(t_node* instruct, t_allocMem* st, int debug, int instructToExe);
 
 /**
 *	Calls the appropriate instruction.

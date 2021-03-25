@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 15:41:15 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 14:17:15 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 15:15:12 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void pushXTimeTo(int whichStack, t_node* instruct, t_allocMem* st, int x)
 {
 	while (whichStack == STACK_A && x--)
-		execInstructPushSwap(instruct, st, TRUE, "pa");
+		execInstructPushSwap(instruct, st, TRUE, PA);
 	while (whichStack == STACK_B && x--)
-		execInstructPushSwap(instruct, st, TRUE, "pb");
+		execInstructPushSwap(instruct, st, TRUE, PB);
 }
 
 // Returns true if the median or a value superior to the median is present in 
@@ -79,8 +79,8 @@ void pushToA(t_node* instruct, t_allocMem* st, t_node* end, int med)
 	{
 		// Bringing the value to push to top of B and pushing it to A
 		while (rb--)
-			execInstructPushSwap(instruct, st, TRUE, "rb");
-		execInstructPushSwap(instruct, st, TRUE, "pa");
+			execInstructPushSwap(instruct, st, TRUE, RB);
+		execInstructPushSwap(instruct, st, TRUE, PA);
 		
 		// If median value was the last value to be pushed, no need to put it at bottom and to bring 
 		// it back at top : it's already at its correct position in the serie
@@ -89,12 +89,12 @@ void pushToA(t_node* instruct, t_allocMem* st, t_node* end, int med)
 		
 		// Otherwise saving the median at the bottom of A
 		else if (st->endA->next->data == med)
-			execInstructPushSwap(instruct, st, TRUE, "ra");
+			execInstructPushSwap(instruct, st, TRUE, RA);
 	}
 
 	// Puting median at its right position, at top of A (it was saved at the bottom of A).
 	// The median is now at its corred position and is sorted.
-	!medianWasLast ? execInstructPushSwap(instruct, st, TRUE, "rra") : 0;
+	!medianWasLast ? execInstructPushSwap(instruct, st, TRUE, RRA) : 0;
 }
 
 // Pushes from stack A the median and all values inferior to itself to stack B. 
@@ -116,13 +116,13 @@ void pushToB(t_node* instruct, t_allocMem* st, t_node* end, int med)
 		
 		// Bringing the value to push to top of A and pushing it to B
         while (ra--)
-			execInstructPushSwap(instruct, st, TRUE, "ra");
-		execInstructPushSwap(instruct, st, TRUE, "pb");
+			execInstructPushSwap(instruct, st, TRUE, RA);
+		execInstructPushSwap(instruct, st, TRUE, PB);
 
 		// If we just pushed the median on B, saving it at the bottom of B (except if B contains only 
 		// median value, it's already at bottom)
 		if (st->endB->next->data == med && findNumberInAToPushToB(st->endA, end, med, &ra))
-			st->endB->data != 1 ? execInstructPushSwap(instruct, st, TRUE, "rb") : 0;
+			st->endB->data != 1 ? execInstructPushSwap(instruct, st, TRUE, RB) : 0;
 			
 		// If median value was the last value to be pushed, no need to put it at bottom and to bring 
 		// it back at top : it's already at its correct position in the serie
@@ -133,9 +133,9 @@ void pushToB(t_node* instruct, t_allocMem* st, t_node* end, int med)
 
 	// Bringing back to top of A the values superior to median
 	while (tmp--)
-		execInstructPushSwap(instruct, st, TRUE, "rra");
+		execInstructPushSwap(instruct, st, TRUE, RRA);
 
 	// Puting median at its right position, at top of B (it was saved at the bottom of B).
 	// The median is now at its corred position and is sorted.
-	!medianWasLast ? execInstructPushSwap(instruct, st, TRUE, "rrb") : 0;
+	!medianWasLast ? execInstructPushSwap(instruct, st, TRUE, RRB) : 0;
 }
