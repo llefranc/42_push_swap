@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 12:58:17 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 16:08:20 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 16:12:51 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,13 @@ int checkIfInt(char *str, int numOfDigits)
 
 int checkArgs(int ac, char** av, int* debug)
 {
-	// Case no args, checker displays nothing and quit (or if only -v and no args for checker, 
-	// or if -v is present for push_swap (only checker handle this option))
-	if (ac == 1 || (ac == 2 && !ft_strcmp(av[1], "-v")) || 
+	// Case no args, checker displays nothing and quit 
+	if (ac == 1)
+		exit(EXIT_SUCCESS);
+
+	// if -v -v and no args for checker, or if -v is present for push_swap 
+	// (only checker handle this option))
+	if ((ac == 2 && !ft_strcmp(av[1], "-v")) || 
 			(ac >= 2 && !ft_strcmp(av[1], "-v") && !debug))
 		return FALSE;
 
