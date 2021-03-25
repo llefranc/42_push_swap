@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 11:51:00 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 13:51:45 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 13:57:02 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ int main(int ac, char **av)
 	}
 	
 	// If an error occured during get_next_line
-	if (ret == -1)
-		errorMsg(&st);
+	ret == -1 ? errorMsg(&st) : free(instruct);
 	
 	// Checking is stack A is sorted and stack B is empty, printing 
 	// the result on STDOUT and freeing all memory allocated

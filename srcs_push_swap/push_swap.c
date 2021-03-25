@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:30:11 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 13:24:56 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 14:03:27 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void printAllInstructions(t_node* instruct)
 int main(int ac, char **av)
 {
 	// Checking if arguments are correct
-	if (!checkArgs(ac, av))
-		return FALSE;
+	if (!checkArgs(ac, av, NULL))
+		errorMsg(NULL);
 
 	t_allocMem st;
 	initStruct(&st);
@@ -62,7 +62,6 @@ int main(int ac, char **av)
 	st.quickIns = newEndNode(&st);
 	st.selecIns = newEndNode(&st);
     
-	
 	// Creating stack A
 	int size = 0;
 	while (++size < ac)

@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 15:39:33 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 14:37:55 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 14:04:01 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_sizeParts* initPartitionning(t_node* instruct, t_allocMem* st)
 	// Finding the size of the two parts of the serie for the next recursive loop
 	t_sizeParts* sizeParts;
 	if (!(sizeParts = malloc(sizeof(*sizeParts))))
-		cleanExit(st, EXIT_FAILURE);
+		errorMsg(st);
 	calcSizeParts(sizeParts, begin, end, med->data, STACK_A);
 
 	int ra = 0;
@@ -177,7 +177,7 @@ t_sizeParts* partitionning(t_node* instruct, t_allocMem* st, int totalSize, int 
 	// Finding the size of the two parts of the serie for the next recursive loop
 	t_sizeParts* sizeParts;
 	if (!(sizeParts = malloc(sizeof(*sizeParts))))
-		cleanExit(st, EXIT_FAILURE);
+		errorMsg(st);
 	calcSizeParts(sizeParts, begin, end, med->data, whichStack);
 
     whichStack == STACK_A ? pushToB(instruct, st, end, med->data) : pushToA(instruct, st, end, med->data);

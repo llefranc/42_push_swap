@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:31:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/23 14:24:33 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 14:05:42 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_node* findMed(t_allocMem* st, t_node* begin, t_node* end)
 	int size = 0;
 
 	if (!(array = createArray(begin, end, &size)))
-		cleanExit(st, EXIT_FAILURE);
+		errorMsg(st);
 	
 	copyIntoArray(begin, end, array);
 	sortArray(array, size);

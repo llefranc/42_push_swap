@@ -19,7 +19,7 @@ t_node* newEndNode(t_allocMem* st)
 	t_node* endList;
 	
 	if (!(endList = malloc(sizeof(t_node))))
-		cleanExit(st, EXIT_FAILURE);
+		errorMsg(st);
 	endList->next = endList;
 	endList->prev = endList;
 
@@ -42,7 +42,7 @@ t_node* createNode(t_allocMem* st, const int val)
 {
 	t_node* newNode;
 	if (!(newNode = malloc(sizeof(t_node))))
-		cleanExit(st, EXIT_FAILURE);
+		errorMsg(st);
 	newNode->data = val;
 	newNode->color = FALSE;
 
