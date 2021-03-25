@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:30:11 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 14:03:27 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 16:04:24 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,16 @@ int main(int ac, char **av)
 		sortSmallStack(st.smallIns, &st, sizeList(st.endA->next, st.endA));
     else
 		quicksort(st.quickIns, &st, sizeList(st.endA->next, st.endA), INIT);
+
+		// printf("jhsd\n");
+		// printAllInstructions(st.smallIns);
+		
 	
 	removeUselessInstructions(st.quickIns);
 	removeUselessInstructions(st.smallIns);
+
+		// printAllInstructions(st.smallIns);
+
 
     if (size <= 5)
 		printAllInstructions(st.smallIns);

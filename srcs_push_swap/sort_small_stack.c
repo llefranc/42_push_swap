@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 13:14:38 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 14:12:56 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 15:46:20 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void sortSmallStack(t_node* smallInstruct, t_allocMem* st, int size)
 		// Spliting the serie in 2 elems on A, 3 on B
 		initPartitionning(smallInstruct, st);
 
-		sortThreeElemsOnSmallB(smallInstruct, st);
+		if (!isSorted(st->endB->next, st->endB, STACK_B))
+			sortThreeElemsOnSmallB(smallInstruct, st);
 		if (!isSorted(st->endA->next, st->endA, STACK_A))
 			execInstructPushSwap(smallInstruct, st, TRUE, SA);
 

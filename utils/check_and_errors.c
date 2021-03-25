@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 12:58:17 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 14:02:50 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/25 16:08:20 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int checkArgs(int ac, char** av, int* debug)
 {
 	// Case no args, checker displays nothing and quit (or if only -v and no args for checker, 
 	// or if -v is present for push_swap (only checker handle this option))
-	if (ac == 1 || (ac == 2 && ft_strcmp(av[1], "-v")) || 
+	if (ac == 1 || (ac == 2 && !ft_strcmp(av[1], "-v")) || 
 			(ac >= 2 && !ft_strcmp(av[1], "-v") && !debug))
 		return FALSE;
 

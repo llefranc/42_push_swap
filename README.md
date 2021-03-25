@@ -8,5 +8,7 @@ https://zestedesavoir.com/tutoriels/621/algorithmique-pour-lapprenti-programmeur
 https://medium.com/jl-codes/understanding-sorting-algorithms-af6222995c8
 https://www.youtube.com/watch?v=7h1s2SojIRw
 
-5366
+5357
 772
+9
+1
