@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 17:04:39 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 16:04:01 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/26 13:06:21 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 void rrOpti(t_node* endNode, t_node** node)
 {
 	t_node* tmp = (*node)->next;
-
-	// printf("DASN RR tmp %d, endnode %d, node %d\n", tmp->data, endNode->data, (*node)->data);
-	// printf("DANS RR tmp %p, endnode %p, node %p\n", tmp, endNode, *node);
 
 	while (tmp != endNode)
 	{
@@ -94,14 +91,10 @@ void papbOpti(t_node* endNode, t_node** node)
 	if (tmp != endNode && (((*node)->data == PA && tmp->data == PB) || 
 			((*node)->data == PB && tmp->data == PA)))
 	{
-		// printf("SUPPRESSION tmp %d, (*node) %d, endNOde %d\n", tmp->data, (*node)->data, endNode->data);
-		// printf("SUPPRESSION tmp %p, (*node) %p, endNOde %p\n", tmp, (*node), endNode);
-
 		deleteNode(tmp);
 		tmp = *node;
 		*node = (*node)->prev;
 		deleteNode(tmp);
-		// printf("\n");
 	}
 }
 
@@ -131,11 +124,6 @@ void removeUselessInstructions(t_node* instruct)
 
 	while (tmp != instruct && tmp->next != instruct)
 	{
-		// printf("-----------------------------\n");
-		// printf("tmp %d, instruct %d\n", tmp->data, instruct->data);
-		// printf("tmp %p, instruct %p\n", tmp, instruct);
-
-
 		if (tmp->data == RA || tmp->data == RB)
 			rrOpti(instruct, &tmp);
 		else if (tmp->data == RRA || tmp->data == RRB)
