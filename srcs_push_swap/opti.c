@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 17:04:39 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/26 13:17:55 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/26 13:19:29 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void rr_rrr_Opti(t_node* endNode, t_node** node, int caseRrr)
 {
 	t_node* tmp = (*node)->next;
 
+	// First trying to remove ra / rra couples (-2 instructions)
 	while (tmp != endNode)
 	{
 		// Will alter order 
@@ -37,6 +38,7 @@ void rr_rrr_Opti(t_node* endNode, t_node** node, int caseRrr)
 		tmp = tmp->next;
 	}
 
+	// Then trying to combine ra / rb couples into a rr (-1 instruction)
 	tmp = (*node)->next;
 	while (tmp != endNode)
 	{
