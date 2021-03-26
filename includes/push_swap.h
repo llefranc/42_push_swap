@@ -6,7 +6,7 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:32:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 13:08:49 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/26 13:17:43 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,7 @@ void ssOpti(t_node* endNode, t_node** node);
 
 void papbOpti(t_node* endNode, t_node** node);
 
-void rrrOpti(t_node* endNode, t_node** node);
-
-void rrOpti(t_node* endNode, t_node** node);
+void rr_rrr_Opti(t_node* endNode, t_node** node, int caseRrr);
 
 void removeUselessInstructions(t_node* instruct);
 

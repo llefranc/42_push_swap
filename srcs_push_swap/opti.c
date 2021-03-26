@@ -6,13 +6,14 @@
 /*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 17:04:39 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/26 13:06:21 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/26 13:17:55 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/headers.h"
 
-void rrOpti(t_node* endNode, t_node** node)
+// Transforming rr instructions into rrr instructions
+void rr_rrr_Opti(t_node* endNode, t_node** node, int caseRrr)
 {
 	t_node* tmp = (*node)->next;
 
@@ -22,16 +23,9 @@ void rrOpti(t_node* endNode, t_node** node)
 		if (tmp->data == PA || tmp->data == PB || tmp->data == SB || tmp->data == SA)
 			break ;
 		
-		// Double instruction, we replace it with RR
-		if (((*node)->data == RA && tmp->data == RB) || ((*node)->data == RB && tmp->data == RA))
-		{
-			(*node)->data = RR;
-			deleteNode(tmp);
-			return ;
-		}
-
 		// RA + RRA = useless
-		if (((*node)->data == RA && tmp->data == RRA) || ((*node)->data == RB && tmp->data == RRB))
+		if (((*node)->data == RA + caseRrr && tmp->data == RRA - caseRrr) ||
+				((*node)->data == RB + caseRrr && tmp->data == RRB - caseRrr))
 		{
 			deleteNode(tmp);
 			tmp = *node;
@@ -42,32 +36,19 @@ void rrOpti(t_node* endNode, t_node** node)
 
 		tmp = tmp->next;
 	}
-}
 
-void rrrOpti(t_node* endNode, t_node** node)
-{
-	t_node* tmp = (*node)->next;
-
+	tmp = (*node)->next;
 	while (tmp != endNode)
 	{
 		// Will alter order 
 		if (tmp->data == PA || tmp->data == PB || tmp->data == SB || tmp->data == SA)
 			break ;
-		
-		// Double instruction, we replace it with RRR
-		if (((*node)->data == RRA && tmp->data == RRB) || ((*node)->data == RRB && tmp->data == RRA))
-		{
-			(*node)->data = RRR;
-			deleteNode(tmp);
-			return ;
-		}
 
-		// RRA + RA = useless
-		if (((*node)->data == RRA && tmp->data == RA) || ((*node)->data == RRB && tmp->data == RB))
+		// Double instruction, we replace it with RR
+		if (((*node)->data == RA + caseRrr && tmp->data == RB + caseRrr) ||
+				((*node)->data == RB + caseRrr && tmp->data == RA + caseRrr))
 		{
-			deleteNode(tmp);
-			tmp = *node;
-			*node = (*node)->prev;
+			(*node)->data = RR + caseRrr;
 			deleteNode(tmp);
 			return ;
 		}
@@ -125,9 +106,9 @@ void removeUselessInstructions(t_node* instruct)
 	while (tmp != instruct && tmp->next != instruct)
 	{
 		if (tmp->data == RA || tmp->data == RB)
-			rrOpti(instruct, &tmp);
+			rr_rrr_Opti(instruct, &tmp, 0);
 		else if (tmp->data == RRA || tmp->data == RRB)
-			rrrOpti(instruct, &tmp);
+			rr_rrr_Opti(instruct, &tmp, 3);
 		else if (tmp->data == PA || tmp->data == PB)
 			papbOpti(instruct, &tmp);
 		else if (tmp->data == SA || tmp->data == SB)
