@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finding_median.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:31:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 14:05:42 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/26 10:50:43 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ t_node* findMed(t_allocMem* st, t_node* begin, t_node* end)
 
 	while (tmp->data != med)
 		tmp = tmp->next;
+	
+	free(array);
 
 	return tmp;
 }

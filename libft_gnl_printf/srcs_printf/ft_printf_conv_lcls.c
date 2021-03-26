@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_conv_lcls.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 18:37:25 by llefranc          #+#    #+#             */
-/*   Updated: 2020/02/06 16:26:16 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/26 10:45:30 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,6 @@ void	str_conv_ls(t_elem *par, va_list ap)
 
 void	str_conv_ls2(t_elem *par)
 {
-	int i;
-
-	i = 0;
 	if (!par->fl_rev)
 	{
 		buf_fill(par, NULL, ' ', par->val_wid - (int)ft_strlen(par->b_str));
@@ -122,9 +119,6 @@ void	str_conv_ls2(t_elem *par)
 
 void	str_conv_ls3(t_elem *par)
 {
-	int i;
-
-	i = 0;
 	if (par->val_pre && (unsigned char)((par->b_str)[par->val_pre]) > 0x7F)
 	{
 		while (par->val_pre && (unsigned char)((par->b_str)[par->val_pre])

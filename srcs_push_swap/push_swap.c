@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:30:11 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 16:04:24 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/26 10:54:04 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,12 @@ int main(int ac, char **av)
 
 		// printAllInstructions(st.smallIns);
 
-
     if (size <= 5)
 		printAllInstructions(st.smallIns);
 	else
 		printAllInstructions(st.quickIns);
 
+	cleanExit(&st, TRUE);
 	return TRUE;
 }
 
