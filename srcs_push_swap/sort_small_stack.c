@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 13:14:38 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/27 10:41:04 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/03/27 10:47:30 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,10 @@ void pushTwoLowestFromAToB(t_node* smallInstruct, t_allocMem* st)
 	copyIntoArray(st->endA->next, st->endA, array);
 	sortArray(array, size);
     
-	int med = array[1];
     int ra = 0;
     int rra = 0;
+	int med = array[1];
+    free(array);
 
     // Pushing this value and the value inferior to it on B
     while (findNextNumberToMove(st->endA, med, &ra, &rra))
