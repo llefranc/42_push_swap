@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:32:46 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/26 13:17:43 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/27 12:06:43 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ void sortThreeElemsOnSmallA(t_node* instruct, t_allocMem* st);
 void sortThreeElemsOnSmallB(t_node* instruct, t_allocMem* st);
 
 void sortSmallStack(t_node* smallInstruct, t_allocMem* st, int size);
+
+void pushTwoLowestFromAToB(t_node* smallInstruct, t_allocMem* st);
 
 void initStruct(t_allocMem* st);
 
