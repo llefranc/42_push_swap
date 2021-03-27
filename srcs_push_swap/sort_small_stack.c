@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_small_stack.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 13:14:38 by llefranc          #+#    #+#             */
-/*   Updated: 2021/03/25 15:46:20 by llefranc         ###   ########.fr       */
+/*   Updated: 2021/03/27 10:41:04 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,35 @@ void sortThreeElemsOnSmallB(t_node* instruct, t_allocMem* st)
         execInstructPushSwap(instruct, st, TRUE, SB);
 }
 
+void pushTwoLowestFromAToB(t_node* smallInstruct, t_allocMem* st)
+{
+	int* array;
+	int size = 0;
+
+	if (!(array = createArray(st->endA->next, st->endA, &size)))
+		errorMsg(st);
+	
+    // Finding the value at rank 2 in a sorted serie
+	copyIntoArray(st->endA->next, st->endA, array);
+	sortArray(array, size);
+    
+	int med = array[1];
+    int ra = 0;
+    int rra = 0;
+
+    // Pushing this value and the value inferior to it on B
+    while (findNextNumberToMove(st->endA, med, &ra, &rra))
+    {
+        if (ra <= rra)
+			while (ra--)
+				execInstructPushSwap(smallInstruct, st, TRUE, RA);
+		else
+			while (rra--)
+				execInstructPushSwap(smallInstruct, st, TRUE, RRA);
+		execInstructPushSwap(smallInstruct, st, TRUE, PB);
+    }
+}
+
 void sortSmallStack(t_node* smallInstruct, t_allocMem* st, int size)
 {
 	// If stack already sorted, the program would have exit before this function
@@ -80,30 +109,18 @@ void sortSmallStack(t_node* smallInstruct, t_allocMem* st, int size)
 	else if (size == 3)
 		sortThreeElemsOnSmallA(smallInstruct, st);
 		
-	else if (size == 4)
-	{
-		// Splitting the serie in two couples
-		initPartitionning(smallInstruct, st);
-		
-		// Swapping the two couples if needed
-		if (!isSorted(st->endA->next, st->endA, STACK_A))
-			execInstructPushSwap(smallInstruct, st, TRUE, SA);
-		if (!isSorted(st->endB->next, st->endB, STACK_B))
-			execInstructPushSwap(smallInstruct, st, TRUE, SB);
-
-		pushXTimeTo(STACK_A, smallInstruct, st, 2);
-	}
-
-	else if (size == 5)
-	{
-		// Spliting the serie in 2 elems on A, 3 on B
-		initPartitionning(smallInstruct, st);
-
-		if (!isSorted(st->endB->next, st->endB, STACK_B))
-			sortThreeElemsOnSmallB(smallInstruct, st);
-		if (!isSorted(st->endA->next, st->endA, STACK_A))
-			execInstructPushSwap(smallInstruct, st, TRUE, SA);
-
-		pushXTimeTo(STACK_A, smallInstruct, st, 3);
-	}
+    else if (size == 4 || size == 5)
+    {
+        // Pushing the two lowest values
+        pushTwoLowestFromAToB(smallInstruct, st);
+        
+        // sorting A (2 or 3 values) and B (2 values)
+        if (!isSorted(st->endB->next, st->endB, STACK_B))
+            execInstructPushSwap(smallInstruct, st, TRUE, SB);
+        if (!isSorted(st->endA->next, st->endA, STACK_A))
+            size == 4 ? execInstructPushSwap(smallInstruct, st, TRUE, SA) :
+                    sortThreeElemsOnSmallA(smallInstruct, st);
+                    
+        pushXTimeTo(STACK_A, smallInstruct, st, 2);
+    }
 }
