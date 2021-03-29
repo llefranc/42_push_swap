@@ -25,8 +25,6 @@
 
 enum e_instructions { INIT, SA, SB, SS, PA, PB, RA, RB, RR, RRA, RRB, RRR };
 
-int compteur;
-
 
 /* ------------------------------------------------------------- */
 /* -------------------------- VARIABLES ------------------------ */
