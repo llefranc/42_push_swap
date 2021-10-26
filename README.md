@@ -32,7 +32,7 @@ For small list of integers (< 5) I'm using custom sortings to optimize the numbe
 </br></br>Average nb of insctructions for 100 tests :
 - :white_check_mark: : 3 numbers in `1` instruction *(grade 5/5)*
 - :white_check_mark: : 5 numbers in `9` instructions *(grade 5/5)*
-- :white_check_mark: : 100 numbers in `772` instructions *(grade 5/5)*
+- :white_check_mark: : 100 numbers in `772` instructions *(grade 4/5)*
 - :white_check_mark: : 500 numbers in `5357` instructions *(grade 5/5)*
 
 ## Building and running the project
