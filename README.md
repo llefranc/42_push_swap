@@ -25,9 +25,9 @@ Push_swap is a project of the mandatory part of the cursus.
 
 In order to succeed, a good comprehension of what is **complexity**, and how the best **sorting algorithms** work was necessary. 
 
-## How I solve the problem
+## How I solved the problem
 
-For small list of integers (< 5) I'm using custom sortings to optimize the number of instructions. 
+For small list of integers (< 5 numbers) I used custom sortings to optimize the number of instructions. 
 </br>For bigger list, I implemented a variant of quicksort algorithm with several optimizations.
 </br></br>Average nb of insctructions for 100 tests :
 - :white_check_mark: : 3 numbers in `1` instruction *(grade 5/5)*
