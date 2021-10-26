@@ -28,12 +28,11 @@ In order to succeed, a good comprehension of what is **complexity**, and how the
 ## How I solve the project
 
 For small list of integers (< 5) I'm using custom sortings to optimize the number of instructions. For bigger list, I implemented a variant of quicksort algorithm.
-</br>My push_swap algorithm is sorting a stack of : 
+</br></br>My push_swap algorithm is sorting a stack of  : *(average nb of insctructions for 100 tests)* 
 - :white_check_mark: : 3 numbers in `1` instruction *(grade 5/5)*
 - :white_check_mark: : 5 numbers in `9` instructions *(grade 5/5)*
 - :white_check_mark: : 100 numbers in `772` instructions *(grade 5/5)*
 - :white_check_mark: : 500 numbers in `5357` instructions *(grade 5/5)*
-</br>*each time average number of insctructions for 100 tests*
 
 ## Building and running the project
 
