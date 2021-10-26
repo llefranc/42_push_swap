@@ -25,17 +25,17 @@ Push_swap is a project of the mandatory part of the cursus.
 
 In order to succeed, a good comprehension of what is **complexity**, and how the best **sorting algorithms** work was necessary. 
 
-### How I solve the project
+## How I solve the project
 
 For small list of integers (< 5) I'm using custom sortings to optimize the number of instructions. For bigger list, I implemented a variant of quicksort algorithm.
 </br>My push_swap algorithm is sorting a stack of : 
-:white_check_mark: 3 numbers in `1` instruction *(grade 5/5)*
-:white_check_mark: 5 numbers in `9` instructions *(grade 5/5)*
-:white_check_mark: 100 numbers in `772` instructions *(grade 4/5)*
-:white_check_mark: 500 numbers in `5357` instructions *(grade 5/5)*
+- :white_check_mark: : 3 numbers in `1` instruction *(grade 5/5)*
+- :white_check_mark: : 5 numbers in `9` instructions *(grade 5/5)*
+- :white_check_mark: : 100 numbers in `772` instructions *(grade 5/5)*
+- :white_check_mark: : 500 numbers in `5357` instructions *(grade 5/5)*
 </br>*each time average number of insctructions for 100 tests*
 
-### Building and running the project
+## Building and running the project
 
 1. Download/Clone this repo
 
@@ -76,8 +76,3 @@ For small list of integers (< 5) I'm using custom sortings to optimize the numbe
 [5]: https://zestedesavoir.com/tutoriels/621/algorithmique-pour-lapprenti-programmeur/400_premiers-exemples-de-structures-de-donnees-et-dalgorithmes-courants/2024_introduction-au-probleme-du-tri/
 [6]: https://medium.com/jl-codes/understanding-sorting-algorithms-af6222995c8
 [7]: https://www.youtube.com/watch?v=7h1s2SojIRw
-
-5357
-772
-9
-1
