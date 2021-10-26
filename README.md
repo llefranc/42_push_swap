@@ -11,7 +11,7 @@
 Push_swap is a project of the mandatory part of the cursus.
 It's only made in C and was about creating two programs : one sorting two "special" stacks, and another one checking if the stacks are sorted or not. 
 </br>We were only allowed to modify the two "stacks", called **stack a** and **stack b**, using a set of instruction : 
-- :arrow_right: **sa**  : swap a - swap the first 2 elements at the top of stack a. Do nothing if there is only one or no elements).
+- **sa** :arrow_right: : swap a - swap the first 2 elements at the top of stack a. Do nothing if there is only one or no elements).
 - :arrow_right: **sb**  : swap b - swap the first 2 elements at the top of stack b. Do nothing if there is only one or no elements).
 - :arrow_right: **ss**  : sa and sb at the same time.
 - :arrow_right: **pa**  : push a - take the first element at the top of b and put it at the top of a. Do nothing if b is empty.
