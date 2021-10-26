@@ -39,7 +39,7 @@ For small list of integers (< 5) I'm using custom sortings to optimize the numbe
 
 1. Download/Clone this repo
 
-        git clone https://github.com/lucaslefrancq/42_push_swap.git
+        git clone https://github.com/llefranc/42_push_swap.git
 
 2. `cd` into the root directory and run `make`
 
