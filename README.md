@@ -1,4 +1,4 @@
-# Push_swap (@42Paris)
+# push_swap (@42Paris)
 
 > This project was code for MACOS. Here is the [subject][8].
 >
