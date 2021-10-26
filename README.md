@@ -4,7 +4,7 @@
 >
 *"Because swap_push isn't as natural"*
 
-![Alt text](https://github.com/llefranc/42_ft_containers/blob/main/containers_example.png)
+![Alt text](https://github.com/llefranc/42_push_swap/blob/main/push_swap_example.png)
 
 ## About
 
