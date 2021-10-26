@@ -76,3 +76,4 @@ For small list of integers (< 5) I'm using custom sortings to optimize the numbe
 [5]: https://zestedesavoir.com/tutoriels/621/algorithmique-pour-lapprenti-programmeur/400_premiers-exemples-de-structures-de-donnees-et-dalgorithmes-courants/2024_introduction-au-probleme-du-tri/
 [6]: https://medium.com/jl-codes/understanding-sorting-algorithms-af6222995c8
 [7]: https://www.youtube.com/watch?v=7h1s2SojIRw
+[8]: https://github.com/llefranc/42_push_swap/blob/master/push_swap.en.pdf
