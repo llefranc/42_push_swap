@@ -25,6 +25,16 @@ Push_swap is a project of the mandatory part of the cursus.
 
 In order to succeed, a good comprehension of what is **complexity**, and how the best **sorting algorithms** work was necessary. 
 
+### How I solve the project
+
+For small list of integers (< 5) I'm using custom sortings to optimize the number of instructions. For bigger list, I implemented a variant of quicksort algorithm.
+</br>My push_swap algorithm is sorting a stack of : 
+- 3 numbers in 1 instruction
+- 5 numbers in 9 instructions
+- 100 numbers in 772 instructions
+- 500 numbers in 5357 instructions
+</br>*each time average number of insctructions for 100 tests*
+
 ### Building and running the project
 
 1. Download/Clone this repo
