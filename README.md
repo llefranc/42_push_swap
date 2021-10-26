@@ -11,17 +11,17 @@
 Push_swap is a project of the mandatory part of the cursus.
 It's only made in C and was about creating two programs : one sorting two "special" stacks, and another one checking if the stacks are sorted or not. 
 </br>We were only allowed to modify the two "stacks", called **stack a** and **stack b**, using a set of instruction : 
-- **sa** :arrow_right: : swap a - swap the first 2 elements at the top of stack a. Do nothing if there is only one or no elements).
-- :arrow_right: **sb**  : swap b - swap the first 2 elements at the top of stack b. Do nothing if there is only one or no elements).
-- :arrow_right: **ss**  : sa and sb at the same time.
-- :arrow_right: **pa**  : push a - take the first element at the top of b and put it at the top of a. Do nothing if b is empty.
-- :arrow_right: **pb**  : push b - take the first element at the top of a and put it at the top of b. Do nothing if a is empty.
-- :arrow_right: **ra**  : rotate a - shift up all elements of stack a by 1. The first element becomes the last one.
-- :arrow_right: **rb**  : rotate b - shift up all elements of stack b by 1. The first element becomes the last one.
-- :arrow_right: **rr**  : ra and rb at the same time.
-- :arrow_right: **rra**  : reverse rotate a - shift down all elements of stack a by 1. The flast element becomes the first one.
-- :arrow_right: **rrb**  : reverse rotate b - shift down all elements of stack b by 1. The flast element becomes the first one.
-- :arrow_right: **rrr**  : rra and rrb at the same time.
+- **sa** : swap a - swap the first 2 elements at the top of stack a. Do nothing if there is only one or no elements).
+- **sb** : swap b - swap the first 2 elements at the top of stack b. Do nothing if there is only one or no elements).
+- **ss** : sa and sb at the same time.
+- **pa** : push a - take the first element at the top of b and put it at the top of a. Do nothing if b is empty.
+- **pb** : push b - take the first element at the top of a and put it at the top of b. Do nothing if a is empty.
+- **ra** : rotate a - shift up all elements of stack a by 1. The first element becomes the last one.
+- **rb** : rotate b - shift up all elements of stack b by 1. The first element becomes the last one.
+- **rr** : ra and rb at the same time.
+- **rra** : reverse rotate a - shift down all elements of stack a by 1. The flast element becomes the first one.
+- **rrb** : reverse rotate b - shift down all elements of stack b by 1. The flast element becomes the first one.
+- **rrr** : rra and rrb at the same time.
 
 In order to succeed, a good comprehension of what is **complexity**, and how the best **sorting algorithms** work was necessary. 
 
